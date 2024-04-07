@@ -3,37 +3,38 @@
 # This file is distributed under the same license as the SuperTux package.
 # 
 # Translators:
-# Omer I.S. <omeritzicschwartz@gmail.com>, 2020-2021
-# Omer I.S. <omeritzicschwartz@gmail.com>, 2021
-# Omer I.S. <omeritzicschwartz@gmail.com>, 2020
+# 111More1, 2022
+# 63f334ffc0709ba0fc2361b80bf3c0f0_00ffd1e <ab96c93ca0ac55ba7fa06385427e60dd_878890>, 2020-2022
+# 63f334ffc0709ba0fc2361b80bf3c0f0_00ffd1e <ab96c93ca0ac55ba7fa06385427e60dd_878890>, 2021
+# 63f334ffc0709ba0fc2361b80bf3c0f0_00ffd1e <ab96c93ca0ac55ba7fa06385427e60dd_878890>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: SuperTux\n"
 "Report-Msgid-Bugs-To: https://github.com/SuperTux/supertux/issues\n"
-"POT-Creation-Date: 2020-04-13 17:25+0200\n"
-"PO-Revision-Date: 2021-03-22 21:01+0000\n"
-"Last-Translator: Omer I.S. <omeritzicschwartz@gmail.com>\n"
-"Language-Team: Hebrew (http://www.transifex.com/arctic-games/supertux/language/he/)\n"
+"POT-Creation-Date: 2024-03-03 03:26+0100\n"
+"PO-Revision-Date: 2013-08-10 22:58+0000\n"
+"Last-Translator: 111More1, 2022\n"
+"Language-Team: Hebrew (http://app.transifex.com/arctic-games/supertux/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: he\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;\n"
+"Plural-Forms: nplurals=3; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: 2;\n"
 
 #: data/levels/world1/23rd_airborne.stl:3
 msgid "23rd Airborne"
 msgstr "המוטס ה־23"
 
-#: data/levels/world1/23rd_airborne.stl:355
-#: data/levels/world1/between_glaciers.stl:615
-#: data/levels/world1/between_glaciers.stl:623
-#: data/levels/world1/crystal_mine.stl:1150
-#: data/levels/world1/crystal_mine.stl:1158
+#: data/levels/world1/23rd_airborne.stl:598
+#: data/levels/world1/between_glaciers.stl:855
+#: data/levels/world1/between_glaciers.stl:863
+#: data/levels/world1/crystal_mine.stl:1535
+#: data/levels/world1/crystal_mine.stl:1543
 #: data/levels/world1/frosted_fields.stl:188
 #: data/levels/world1/path_in_the_clouds.stl:348
 #: data/levels/world1/path_in_the_clouds.stl:1126
-#: data/levels/world1/shattered_bridge.stl:269
-#: data/levels/world1/stone_cold.stl:397 data/levels/world1/worldmap.stwm:200
+#: data/levels/world1/shattered_bridge.stl:628
+#: data/levels/world1/stone_cold.stl:397 data/levels/world1/worldmap.stwm:197
 msgid "You found a secret area!"
 msgstr "מצאת אזור סודי!"
 
@@ -41,7 +42,7 @@ msgstr "מצאת אזור סודי!"
 msgid "Above the Arctic Skies"
 msgstr "מעל השמיים הארקטיים"
 
-#: data/levels/world1/above_arctic_skies.stl:152
+#: data/levels/world1/above_arctic_skies.stl:162
 msgid ""
 "-Air Flower\n"
 "!images/powerups/airflower/air_flower-0.png\n"
@@ -52,17 +53,13 @@ msgstr "-פרח אוויר\n!images/powerups/airflower/air_flower-0.png\n#פרח
 msgid "Between Two Glaciers"
 msgstr "בין שני קרחונים"
 
-#: data/levels/world1/between_glaciers.stl:104
+#: data/levels/world1/between_glaciers.stl:108
 msgid ""
 "-Crystals\n"
 "#This level contains four coloured crystals. Can you find them?\n"
 "#\n"
 "#Note: These crystals do not serve any purpose at the moment but they might will in a future release of the game."
 msgstr "-קריסטלים\n#בשלב הזה כלולים ארבעה קריסטלים צבעוניים. את/ה יכול/ה למצוא אותם?\n#\n#הערה: קריסטלים אלו לא משרתים אף מטרה בזה הרגע אך אולי יהיו בגרסה עתידית של המשחק."
-
-#: data/levels/world1/castle_cutscene.stl:3
-msgid "Empty Throne Room"
-msgstr ""
 
 #: data/levels/world1/castle_of_nolok.stl:3
 msgid "The Castle of Nolok"
@@ -72,7 +69,7 @@ msgstr "הטירה של נולוק"
 msgid "The Crystal Mine"
 msgstr "מכרה הקריסלים"
 
-#: data/levels/world1/crystal_mine.stl:608
+#: data/levels/world1/crystal_mine.stl:686
 msgid "#You have to activate two switches to open this door."
 msgstr "#עליך להפעיל שני מתגים כדי לפתוח דלת זו."
 
@@ -82,7 +79,7 @@ msgstr "קצה המנהרה"
 
 #: data/levels/world1/entrance_cave.stl:3
 msgid "Entrance to the Cave"
-msgstr "הכניסה אל המערה"
+msgstr "הכניסה למערה"
 
 #: data/levels/world1/fork_in_the_road.stl:3
 msgid "A Fork in the Road"
@@ -194,19 +191,19 @@ msgstr "עד שלפתע..."
 
 #: data/levels/world1/scripts_intro.txt:2
 msgid "Somewhere at the shores of Antarctica..."
-msgstr "אי שם בקצה אנטרקטיקה..."
+msgstr "אי־שם בקצה אנטרקטיקה..."
 
 #: data/levels/world1/scripts_intro.txt:3
 msgid "Tux the penguin was going to meet his friend, Penny, for a picnic."
-msgstr "טַקס הפינגווין הלך לפגוש את חברתו, פני, בפיקניק."
+msgstr "טַקס הפינגווין הלך להיפגש עם חברתו, פני, לפיקניק."
 
 #: data/levels/world1/scripts_intro.txt:4
 msgid "Tux woke up, dizzy, to find that Penny was missing!"
-msgstr "טַקס התעורר, מסוחרר, וגילה שפני איננה!"
+msgstr "טַקס התעורר, מסוחרר, כדי לגלות שפני איננה!"
 
 #: data/levels/world1/scripts_intro.txt:5
 msgid "Tux was starting to become worried. He then saw a letter, and it read:"
-msgstr "טַקס התחיל להיות מודאג. אז הוא ראה פתק, והתחיל לקרוא:"
+msgstr "טַקס החל להיות מודאג. לאחר מכן הוא ראה פתק, והתחיל לקרוא:"
 
 #: data/levels/world1/scripts_intro.txt:6
 msgid ""
@@ -216,7 +213,7 @@ msgstr "\"טַקס, חטפתי את פני אהובתך והבאתי אותה ל
 
 #: data/levels/world1/scripts_intro.txt:7
 msgid "\"The path to my fortress is littered with my minions.\""
-msgstr "\"הדרך למבצר שלי מוגנת במשרתים שלי.\""
+msgstr "\"כדי להגיע למבצר שלי יהיה עליך לעבור את המשרתים שלי.\""
 
 #: data/levels/world1/scripts_intro.txt:8
 msgid "\"You don't have a chance of saving her! Signed, Nolok.\""
@@ -225,12 +222,12 @@ msgstr "\"אין לך סיכוי להציל אותה! על החתום, נולו�
 #: data/levels/world1/scripts_intro.txt:9
 msgid ""
 "Realizing the trouble Penny could be in, Tux became determined to save her."
-msgstr "טַקס הבין באיזו צרה פני עלולה להסתבך, אך היה נחוש להצילה."
+msgstr "טַקס מבין באיזו צרה פני עלולה להסתבך, אך נחוש להצילה."
 
 #: data/levels/world1/scripts_intro.txt:10
 msgid ""
 "Then, Tux saw Nolok's castle in the distance and set off to rescue Penny!"
-msgstr "ואז, טַקס ראה את הטירה של נולוק מרחוק ויצא לחלץ את פני!"
+msgstr "ואז, טַקס ראה מרחוק את הטירה של נולוק ויצא להציל את פני!"
 
 #: data/levels/world1/scripts_yeti_cutscene.txt:2
 msgid "Exhausted from his long walk, Tux decided to take a little break."
@@ -248,11 +245,11 @@ msgstr "נראה כי יטי צפה בו מרחוק."
 msgid ""
 "Concerned by the yeti's sudden retreat, Tux decided to continue his journey,"
 " ..."
-msgstr ""
+msgstr "מודאג מהנסיגה הפתאומית של האיטי, טוקס החליט להמשיך במסעו, ..."
 
 #: data/levels/world1/scripts_yeti_cutscene.txt:6
 msgid "...while secretly hoping not to run into the yeti again, by any means."
-msgstr ""
+msgstr "... תוך תקווה בסתר לא להיתקל שוב ב-yiti, בשום אופן."
 
 #: data/levels/world1/shattered_bridge.stl:3
 msgid "The Shattered Bridge"
@@ -278,55 +275,55 @@ msgstr "ויה נוסטלגיצ׳ה"
 msgid "Welcome to Antarctica"
 msgstr "ברוכים הבאים לאנטרקטיקה"
 
-#: data/levels/world1/welcome_antarctica.stl:68
+#: data/levels/world1/welcome_antarctica.stl:74
 msgid ""
 "-Bonus Blocks\n"
 "!images/objects/bonus_block/full-0.png\n"
 "#Bonus blocks can contain coins, power-ups or special items to help you in your quest.\n"
 "#\n"
 "#Hit them from below to get at their contents."
-msgstr "-בלוקי בונוס\n!images/objects/bonus_block/full-0.png\n#בלוקי בונוס יכולים להכיל מטבעות, חיזוקים או פריטים מיוחדים שיעזרו לך במסע שלך.\n#\n#יש לנגוח בהם כדי להשיג את הדברים שהם מכילים."
+msgstr "-תיבות\n!images/objects/bonus_block/full-0.png\n#תיבות בונוס יכולות להכיל מטבעות, חיזוקים או פריטים מיוחדים שיעזרו לך במסע.\n#\n#יש לנגוח בהן כדי להשיג את תכולתן."
 
-#: data/levels/world1/welcome_antarctica.stl:77
+#: data/levels/world1/welcome_antarctica.stl:83
 msgid ""
 "-Eggs\n"
 "!images/powerups/egg/egg-shade.png\n"
 "#The egg makes Tux grow larger. Tux can then smash wooden blocks with his head."
-msgstr "-ביצים\n!images/powerups/egg/egg-shade.png\n#הביצים מגדילות את טַקס. אז טַקס יכול לרסק בלוקים מעץ עם הראש שלו."
+msgstr "-ביצים\n!images/powerups/egg/egg-shade.png\n#הביצים מגדילות את טַקס. אז טַקס יכול לרסק תיבות מעץ עם הראש שלו."
 
-#: data/levels/world1/welcome_antarctica.stl:84
+#: data/levels/world1/welcome_antarctica.stl:90
 msgid ""
 "-Checkpoints\n"
 "!images/objects/resetpoints/bell-m.png\n"
 "#Activate the checkpoint. If you die, you can retry the level from here. Every time you retry from a checkpoint, you will lose 10 percent of your coins (at least 25 coins)."
 msgstr "-נקודות סימון\n!images/objects/resetpoints/bell-m.png\n#הפעילו את נקודת הסימון. אם תיפסלו, תוכלו לנסות לעבור את השלב מכאן. בכל פעם שבה תנסו לעבור את השלב שוב, תפסידו 10 אחוז מהמטבעות שלכם (לפחות 25 מטבעות)."
 
-#: data/levels/world1/welcome_antarctica.stl:91
+#: data/levels/world1/welcome_antarctica.stl:97
 msgid ""
 "-Running\n"
 "!images/tiles/signs/run.png\n"
 "#The path in front of you is blocked. Gain some speed before jumping to pass over the blocks."
-msgstr "-ריצה\n!images/tiles/signs/run.png\n#הנתיב מלפנים חסום. יש לתפוס תנופה לפני הקפיצה כדי לפסוח על הבלוקים."
+msgstr "-ריצה\n!images/tiles/signs/run.png\n#הנתיב מלפנים חסום. יש לתפוס תנופה לפני הקפיצה כדי לפסוח על התיבות."
 
-#: data/levels/world1/welcome_antarctica.stl:98
+#: data/levels/world1/welcome_antarctica.stl:104
 msgid ""
 "-Fire Flower\n"
 "!images/powerups/fireflower/fire_flower-0.png\n"
 "#The fire flower gives Tux the ability to shoot fireballs."
 msgstr "-פרח אש\n!images/powerups/fireflower/fire_flower-0.png\n#פרח האש נותן לטַקס את היכולת לירות כדורי אש."
 
-#: data/levels/world1/welcome_antarctica.stl:105
+#: data/levels/world1/welcome_antarctica.stl:111
 msgid ""
 "-Tux Doll\n"
 "!images/powerups/1up/1up.png\n"
 "#The Tux doll gives Tux 100 coins."
 msgstr "-בובת טַקס\n!images/powerups/1up/1up.png\n#בובת טַקס נותנת לטקס 100 מטבעות."
 
-#: data/levels/world1/welcome_antarctica.stl:112
+#: data/levels/world1/welcome_antarctica.stl:118
 msgid ""
 "-Secret Areas\n"
 "#Many levels contain secret areas behind what seems to be plain walls. Look for clues to find them."
-msgstr ""
+msgstr "אזורים סודיים\n#רמות רבות מכילות אזורים סודיים מאחורי מה שנראה כקירות פשוטים. חפש רמזים כדי למצוא אותם."
 
 #: data/levels/world1/worldmap.stwm:3
 msgid "Icy Island"

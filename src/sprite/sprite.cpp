@@ -18,6 +18,7 @@
 
 #include <assert.h>
 
+#include "supertux/direction.hpp"
 #include "supertux/globals.hpp"
 #include "util/log.hpp"
 #include "video/surface.hpp"
@@ -32,6 +33,7 @@ Sprite::Sprite(SpriteData& newdata) :
   m_alpha(1.0f),
   m_color(1.0f, 1.0f, 1.0f, 1.0f),
   m_blend(),
+  m_is_paused(false),
   m_action(m_data.get_action("normal"))
 {
   if (!m_action)
@@ -49,6 +51,7 @@ Sprite::Sprite(const Sprite& other) :
   m_alpha(1.0f),
   m_color(1.0f, 1.0f, 1.0f, 1.0f),
   m_blend(),
+  m_is_paused(other.m_is_paused),
   m_action(other.m_action)
 {
 }
@@ -64,6 +67,30 @@ Sprite::clone() const
 }
 
 void
+Sprite::set_action(const std::string& name, const Direction& dir, int loops)
+{
+  if (dir == Direction::NONE)
+    set_action(name, loops);
+  else
+    set_action(name + "-" + dir_to_string(dir), loops);
+}
+
+void
+Sprite::set_action(const Direction& dir, const std::string& name, int loops)
+{
+  if (dir == Direction::NONE)
+    set_action(name, loops);
+  else
+    set_action(dir_to_string(dir) + "-" + name, loops);
+}
+
+void
+Sprite::set_action(const Direction& dir, int loops)
+{
+  set_action(dir_to_string(dir), loops);
+}
+
+void
 Sprite::set_action(const std::string& name, int loops)
 {
   if (m_action && m_action->name == name)
@@ -72,6 +99,17 @@ Sprite::set_action(const std::string& name, int loops)
   const SpriteData::Action* newaction = m_data.get_action(name);
   if (!newaction) {
     log_debug << "Action '" << name << "' not found." << std::endl;
+    return;
+  }
+
+  // Automatically resume if a new action is set
+  m_is_paused = false;
+
+  // The action's loops were set to continued; use the ones from the previous action.
+  if (loops == LOOPS_CONTINUED)
+  {
+    m_action = newaction;
+    update();
     return;
   }
 
@@ -88,22 +126,6 @@ Sprite::set_action(const std::string& name, int loops)
   m_action = newaction;
 }
 
-void
-Sprite::set_action_continued(const std::string& name)
-{
-  if (m_action && m_action->name == name)
-    return;
-
-  const SpriteData::Action* newaction = m_data.get_action(name);
-  if (!newaction) {
-    log_debug << "Action '" << name << "' not found." << std::endl;
-    return;
-  }
-
-  m_action = newaction;
-  update();
-}
-
 bool
 Sprite::animation_done() const
 {
@@ -116,6 +138,11 @@ Sprite::update()
   float frame_inc = m_action->fps * (g_game_time - m_last_ticks);
   m_last_ticks = g_game_time;
 
+  if (m_is_paused)
+  {
+    return;
+  }
+
   m_frame += frame_inc;
 
   while (m_frame >= 1.0f) {
@@ -124,7 +151,8 @@ Sprite::update()
   }
 
   while (m_frameidx >= get_frames() && !animation_done()) {
-    m_frameidx -= get_frames();
+    // Loop animation.
+    m_frameidx -= get_frames() - (m_action->loop_frame - 1);
     m_animation_loops--;
   }
 
@@ -151,11 +179,11 @@ Sprite::draw(Canvas& canvas, const Vector& pos, int layer,
   context.set_alpha(context.get_alpha() * m_alpha);
 
   canvas.draw_surface(m_action->surfaces[m_frameidx],
-                      pos - Vector(m_action->x_offset, m_action->y_offset),
-                      m_angle,
-                      m_color,
-                      m_blend,
-                      layer);
+                    pos - Vector(m_action->x_offset, flip == NO_FLIP ? m_action->y_offset : (static_cast<float>(m_action->surfaces[m_frameidx]->get_height()) - m_action->y_offset - m_action->hitbox_h)),
+                    m_angle,
+                    m_color,
+                    m_blend,
+                    layer);
 
   context.pop_transform();
 }
@@ -172,6 +200,20 @@ Sprite::get_height() const
 {
   assert(m_frameidx < get_frames());
   return static_cast<int>(m_action->surfaces[m_frameidx]->get_height());
+}
+
+const std::optional<std::vector<SurfacePtr>>
+Sprite::get_action_surfaces(const std::string& name) const
+{
+  const SpriteData::Action* action = m_data.get_action(name);
+  if (!action) return std::nullopt;
+  return action->surfaces;
+}
+
+bool
+Sprite::is_current_hitbox_unisolid() const
+{
+  return m_action->hitbox_unisolid;
 }
 
 float

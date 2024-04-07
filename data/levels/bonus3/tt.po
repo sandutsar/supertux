@@ -3,15 +3,17 @@
 # This file is distributed under the same license as the SuperTux package.
 # 
 # Translators:
+# 111More1, 2022
+# Timur Seber <seber.tatsoft@gmail.com>, 2021
 # Булат Ибраһим <bulat_ibrahim@mail.ru>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: SuperTux\n"
 "Report-Msgid-Bugs-To: https://github.com/SuperTux/supertux/issues\n"
-"POT-Creation-Date: 2019-11-24 01:44+0100\n"
-"PO-Revision-Date: 2019-11-24 00:51+0000\n"
-"Last-Translator: Tobias Markus <tobbi@supertuxproject.org>\n"
-"Language-Team: Tatar (http://www.transifex.com/arctic-games/supertux/language/tt/)\n"
+"POT-Creation-Date: 2024-03-03 03:26+0100\n"
+"PO-Revision-Date: 2013-08-10 23:08+0000\n"
+"Last-Translator: 111More1, 2022\n"
+"Language-Team: Tatar (http://app.transifex.com/arctic-games/supertux/language/tt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,14 +21,14 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/levels/bonus3/-89-2_degrees.stl:3
-msgid "-89.2 degrees"
-msgstr ""
+msgid "The Level Formely Known As \"-89,2 Degrees\""
+msgstr "\"-89,2 градус\" дип аталган дәрәҗә."
 
 #: data/levels/bonus3/Global_Warming.stl:3
 msgid "Global Warming"
 msgstr "Глобаль җылыну"
 
-#: data/levels/bonus3/One Night in the Sky.stl:3
+#: ⁨data/levels/bonus3/One Night in the Sky.stl⁩:3
 msgid "One Night in the Sky"
 msgstr "Күктә бер төн"
 
@@ -39,14 +41,14 @@ msgid "Another cold day"
 msgstr "Тагын бер салкын көн"
 
 #: data/levels/bonus3/antarctic_rain.stl:3
-msgid "Antarctic rain"
-msgstr "Антарктика яңгыры"
+msgid "Forest Rain (aka \"Antarctic Rain\")"
+msgstr "Урман яңгыры (\"Антарктида яңгыры\")"
 
 #: data/levels/bonus3/but_no_one_can_stop_it.stl:3
 msgid "...but no one can stop it..."
 msgstr "...әмма беркем дә моны туктата алмый..."
 
-#: data/levels/bonus3/but_no_one_can_stop_it.stl:392
+#: data/levels/bonus3/but_no_one_can_stop_it.stl:428
 msgid ""
 "-Sorry, this flying platform is lazy.\n"
 "-Come back another time."
@@ -78,7 +80,7 @@ msgstr "#Яхшы эш! Син кызыл яктырткычны саклады�
 msgid "Coconut Fortress"
 msgstr "Кокос Кальгасы"
 
-#: data/levels/bonus3/crystal sunset.stl:3
+#: ⁨data/levels/bonus3/crystal sunset.stl⁩:3
 msgid "Crystal Sunset"
 msgstr "Бәллүр Шәфәкъ"
 
@@ -127,6 +129,10 @@ msgstr "Аска төшү"
 msgid "Entering the castle"
 msgstr "Сарайга керү"
 
+#: data/levels/bonus3/entering_castle.stl:60
+msgid "#Sorry, nothing to see here! Use the rope to get out!"
+msgstr "#Гафу итегез, монда күрергә бернәрсә дә юк! Арканны кулланыгыз!"
+
 #: data/levels/bonus3/flowers.stl:3
 msgid "Flower Bonus"
 msgstr "Чәчәкле ташлама"
@@ -135,7 +141,7 @@ msgstr "Чәчәкле ташлама"
 msgid "After the Glaciers"
 msgstr "Бозлыклардан соң"
 
-#: data/levels/bonus3/hanging roof.stl:3
+#: ⁨data/levels/bonus3/hanging roof.stl⁩:3
 msgid "Hanging From the Roof"
 msgstr "Түбәдән Асылынып"
 
@@ -167,13 +173,13 @@ msgstr "Бәкеләр, Бозда бер Көн"
 msgid "The Toilette zone"
 msgstr "Бәдрәф җире"
 
-#: data/levels/bonus3/niv-3.stl:29
+#: data/levels/bonus3/niv-3.stl:58
 msgid ""
 "- Flush: \n"
 "#Press the up key to flush! "
 msgstr "- Юып төшерү: \n#Юып төшерү өчен ӨСКӘ бас! "
 
-#: data/levels/bonus3/niv-3.stl:219
+#: data/levels/bonus3/niv-3.stl:380
 msgid ""
 "- A Way out?\n"
 "#Let's Jump! "
@@ -211,7 +217,7 @@ msgstr "Карлы калкулык"
 msgid "Three Frosty Icebergs"
 msgstr "Өч Каткан Айсберг"
 
-#: data/levels/bonus3/under ice.stl:3
+#: ⁨data/levels/bonus3/under ice.stl⁩:3
 msgid "Under the Ice"
 msgstr "Боз астында"
 
@@ -219,15 +225,6 @@ msgstr "Боз астында"
 msgid "Bonus Island III"
 msgstr "Ташлама утравы III"
 
-#: data/levels/bonus3/worldmap.stwm:238
-msgid "You found a secret place!"
-msgstr "Сез яшерен җирне таптыгыз!"
-
-#: data/levels/bonus3/worldmap.stwm:282 data/levels/bonus3/worldmap.stwm:297
-#: data/levels/bonus3/worldmap.stwm:304
+#: data/levels/bonus3/worldmap.stwm:273
 msgid "Go Home"
 msgstr "Өеңә кайт"
-
-#: data/levels/bonus3/worldmap.stwm:290
-msgid "Enter Forest Section"
-msgstr ""

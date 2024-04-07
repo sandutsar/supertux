@@ -17,9 +17,11 @@
 #include "object/background.hpp"
 
 #include <physfs.h>
+#include <utility>
 
 #include "editor/editor.hpp"
 #include "supertux/d_scope.hpp"
+#include "supertux/flip_level_transformer.hpp"
 #include "supertux/gameconfig.hpp"
 #include "supertux/globals.hpp"
 #include "util/reader.hpp"
@@ -43,14 +45,13 @@ Background::Background() :
   m_image_top(),
   m_image(),
   m_image_bottom(),
-  m_has_pos_x(false),
-  m_has_pos_y(false),
   m_blend(),
   m_color(1.f, 1.f, 1.f),
   m_target(DrawingTarget::COLORMAP),
   m_timer_color(),
   m_src_color(),
-  m_dst_color()
+  m_dst_color(),
+  m_flip(NO_FLIP)
 {
 }
 
@@ -70,22 +71,14 @@ Background::Background(const ReaderMapping& reader) :
   m_image_top(),
   m_image(),
   m_image_bottom(),
-  m_has_pos_x(false),
-  m_has_pos_y(false),
   m_blend(),
   m_color(),
   m_target(DrawingTarget::COLORMAP),
   m_timer_color(),
   m_src_color(),
-  m_dst_color()
+  m_dst_color(),
+  m_flip(NO_FLIP)
 {
-  // read position, defaults to (0,0)
-  float px = 0;
-  float py = 0;
-  m_has_pos_x = reader.get("x", px);
-  m_has_pos_y = reader.get("y", py);
-  m_pos = Vector(px,py);
-
   reader.get("fill", m_fill);
 
   std::string alignment_str;
@@ -121,6 +114,14 @@ Background::Background(const ReaderMapping& reader) :
   reader.get("scroll-offset-x", m_scroll_offset.x, 0.0f);
   reader.get("scroll-offset-y", m_scroll_offset.y, 0.0f);
 
+  // For backward compatibility, add position to scroll offset.
+  float px;
+  float py;
+  if (reader.get("x", px))
+    m_scroll_offset.x += px;
+  if (reader.get("y", py))
+    m_scroll_offset.y += py;
+
   reader.get("scroll-speed-x", m_scroll_speed.x, 0.0f);
   reader.get("scroll-speed-y", m_scroll_speed.y, 0.0f);
 
@@ -131,7 +132,7 @@ Background::Background(const ReaderMapping& reader) :
 
   if(!reader.get("speed-x", m_parallax_speed.x))
   {
-    // for backward compatibilty
+    // For backward compatibility.
     reader.get("speed", m_parallax_speed.x, 0.5f);
   }
 
@@ -189,11 +190,11 @@ Background::get_settings()
   result.add_float(_("Scroll offset y"), &m_scroll_offset.y, "scroll-offset-y", 0.0f);
   result.add_float(_("Scroll speed x"), &m_scroll_speed.x, "scroll-speed-x", 0.0f);
   result.add_float(_("Scroll speed y"), &m_scroll_speed.y, "scroll-speed-y", 0.0f);
-  result.add_float(_("Parallax Speed x"), &m_parallax_speed.x, "speed", boost::none);
+  result.add_float(_("Parallax Speed x"), &m_parallax_speed.x, "speed", std::nullopt);
   result.add_float(_("Parallax Speed y"), &m_parallax_speed.y, "speed-y", m_parallax_speed.x);
-  result.add_surface(_("Top image"), &m_imagefile_top, "image-top", std::string());
+  result.add_surface(_("Top image"), &m_imagefile_top, "image-top", "");
   result.add_surface(_("Image"), &m_imagefile, "image");
-  result.add_surface(_("Bottom image"), &m_imagefile_bottom, "image-bottom", std::string());
+  result.add_surface(_("Bottom image"), &m_imagefile_bottom, "image-bottom", "");
   result.add_rgba(_("Colour"), &m_color, "color");
   result.add_enum(_("Draw target"), reinterpret_cast<int*>(&m_target),
                   {_("Normal"), _("Lightmap")},
@@ -224,11 +225,11 @@ Background::update(float dt_sec)
   if (m_timer_color.check())
   {
     m_color = m_dst_color;
-    m_timer_color.stop(); // to reset the "check()" value
+    m_timer_color.stop(); // To reset the "check()" value.
   }
   else if (m_timer_color.started())
   {
-    float progress = m_timer_color.get_timegone() / m_timer_color.get_period();
+    float progress = m_timer_color.get_progress();
 
     m_color = (m_src_color + (m_dst_color - m_src_color) * progress).validate();
   }
@@ -278,8 +279,8 @@ void
 Background::draw_image(DrawingContext& context, const Vector& pos_)
 {
   const Sizef level(d_gameobject_manager->get_width(), d_gameobject_manager->get_height());
-  const Sizef screen(static_cast<float>(context.get_width()),
-                     static_cast<float>(context.get_height()));
+  const Sizef screen(context.get_width(),
+                     context.get_height());
   const Sizef parallax_image_size((1.0f - m_parallax_speed.x) * screen.width + level.width * m_parallax_speed.x,
                                   (1.0f - m_parallax_speed.y) * screen.height + level.height * m_parallax_speed.y);
 
@@ -296,13 +297,14 @@ Background::draw_image(DrawingContext& context, const Vector& pos_)
   const int end_y   = static_cast<int>(ceilf((cliprect.get_bottom() - (pos_.y + img_h/2.0f)) / img_h)) + 1;
 
   Canvas& canvas = context.get_canvas(m_target);
+  context.set_flip(context.get_flip() ^ m_flip);
 
   if (m_fill)
   {
-    Rectf dstrect(Vector(pos_.x - static_cast<float>(context.get_width()) / 2.0f,
-                         pos_.y - static_cast<float>(context.get_height()) / 2.0f),
-                  Sizef(static_cast<float>(context.get_width()),
-                        static_cast<float>(context.get_height())));
+    Rectf dstrect(Vector(pos_.x - context.get_width() / 2.0f,
+                         pos_.y - context.get_height() / 2.0f),
+                  Sizef(context.get_width(),
+                        context.get_height()));
     canvas.draw_surface_scaled(m_image, dstrect, m_layer);
   }
   else
@@ -352,11 +354,11 @@ Background::draw_image(DrawingContext& context, const Vector& pos_)
             Vector p(pos_.x + static_cast<float>(x) * img_w - img_w_2,
                      pos_.y + static_cast<float>(y) * img_h - img_h_2);
 
-            if (m_image_top.get() != nullptr && (y < 0))
+            if (m_image_top && (y < 0))
             {
               canvas.draw_surface(m_image_top, p, 0.f, m_color, m_blend, m_layer);
             }
-            else if (m_image_bottom.get() != nullptr && (y > 0))
+            else if (m_image_bottom && (y > 0))
             {
               canvas.draw_surface(m_image_bottom, p, 0.f, m_color, m_blend, m_layer);
             }
@@ -368,6 +370,7 @@ Background::draw_image(DrawingContext& context, const Vector& pos_)
         break;
     }
   }
+  context.set_flip(context.get_flip() ^ m_flip);
 }
 
 void
@@ -376,19 +379,19 @@ Background::draw(DrawingContext& context)
   if (Editor::is_active() && !g_config->editor_render_background)
     return;
 
-  if (m_image.get() == nullptr)
+  if (!m_image)
     return;
 
   Sizef level_size(d_gameobject_manager->get_width(),
                    d_gameobject_manager->get_height());
-  Sizef screen(static_cast<float>(context.get_width()),
-               static_cast<float>(context.get_height()));
+  Sizef screen(context.get_width(),
+               context.get_height());
   Sizef translation_range = level_size - screen;
   Vector center_offset(context.get_translation().x - translation_range.width  / 2.0f,
                        context.get_translation().y - translation_range.height / 2.0f);
 
-  Vector pos(m_has_pos_x ? m_pos.x : level_size.width / 2,
-             m_has_pos_y ? m_pos.y : level_size.height / 2);
+  Vector pos(level_size.width / 2,
+             level_size.height / 2);
   draw_image(context, pos + m_scroll_offset + Vector(center_offset.x * (1.0f - m_parallax_speed.x),
                                                      center_offset.y * (1.0f - m_parallax_speed.y)));
 }
@@ -459,11 +462,14 @@ std::unordered_map<std::string, std::string> fallback_paths = {
 SurfacePtr
 Background::load_background(const std::string& image_path)
 {
+  if (image_path.empty())
+    return nullptr;
+
   if (PHYSFS_exists(image_path.c_str()))
-    // No need to search fallback paths
+    // No need to search fallback paths.
     return Surface::from_file(image_path);
 
-  // Search for a fallback image in fallback_paths
+  // Search for a fallback image in fallback_paths.
   const std::string& default_dir = "images/background/";
   const std::string& default_dir2 = "/images/background/";
   std::string new_path = image_path;
@@ -473,12 +479,25 @@ Background::load_background(const std::string& image_path)
     new_path.erase(0, default_dir2.length());
   auto it = fallback_paths.find(new_path);
   if (it == fallback_paths.end())
-    // Unknown image, let the texture manager select the dummy texture
+    // Unknown image, let the texture manager select the dummy texture.
     return Surface::from_file(image_path);
 
   new_path = default_dir + it->second;
   return Surface::from_file(new_path);
 }
 
+void
+Background::on_flip(float height)
+{
+  GameObject::on_flip(height);
+  std::swap(m_image_bottom, m_image_top);
+  m_pos.y = height - m_pos.y - static_cast<float>(m_image->get_height());
+  m_scroll_offset.y = -m_scroll_offset.y;
+  if (m_alignment == BOTTOM_ALIGNMENT)
+    m_alignment = TOP_ALIGNMENT;
+  else if (m_alignment == TOP_ALIGNMENT)
+    m_alignment = BOTTOM_ALIGNMENT;
+  FlipLevelTransformer::transform_flip(m_flip);
+}
 
 /* EOF */

@@ -41,13 +41,15 @@ public:
   void reinit_textures();
   virtual void update(float dt_sec) override;
 
-  virtual std::string get_class() const override { return "particles-custom"; }
-  virtual std::string get_display_name() const override { return _("Custom Particles"); }
+  static std::string class_name() { return "particles-custom"; }
+  virtual std::string get_class_name() const override { return class_name(); }
+  static std::string display_name() { return _("Custom Particles"); }
+  virtual std::string get_display_name() const override { return display_name(); }
   virtual void save(Writer& writer) override;
   virtual ObjectSettings get_settings() override;
 
   virtual const std::string get_icon_path() const override {
-    return "images/engine/editor/sparkle.png";
+    return "images/engine/editor/particle.png";
   }
 
   virtual void expose(HSQUIRRELVM vm, SQInteger table_idx) override {
@@ -135,7 +137,7 @@ private:
     SpriteProperties() :
       likeliness(1.f),
       color(1.f, 1.f, 1.f, 1.f),
-      texture(Surface::from_file("images/engine/editor/sparkle.png")),
+      texture(Surface::from_file("images/engine/editor/particle.png")),
       scale(1.f, 1.f),
       hb_scale(1.f, 1.f),
       hb_offset(0.f, 0.f)

@@ -17,38 +17,59 @@
 #ifndef HEADER_SUPERTUX_OBJECT_TEXT_OBJECT_HPP
 #define HEADER_SUPERTUX_OBJECT_TEXT_OBJECT_HPP
 
-#include "math/anchor_point.hpp"
-#include "scripting/text.hpp"
 #include "squirrel/exposed_object.hpp"
 #include "supertux/game_object.hpp"
+
+#include "math/anchor_point.hpp"
+#include "scripting/text_object.hpp"
 #include "video/color.hpp"
+#include "video/drawing_context.hpp"
 #include "video/font_ptr.hpp"
+
+class DrawingContext;
+class ReaderMapping;
 
 /** A text object intended for scripts that want to tell a story */
 class TextObject final : public GameObject,
-                         public ExposedObject<TextObject, scripting::Text>
+                         public ExposedObject<TextObject, scripting::TextObject>
 {
   static Color default_color;
 
 public:
-  TextObject(const std::string& name = std::string());
+  TextObject(const std::string& name = "");
   ~TextObject() override;
+
+  static std::string class_name() { return "textobject"; }
+  virtual std::string get_class_name() const override { return class_name(); }
+  static std::string display_name() { return _("Text"); }
+  virtual std::string get_display_name() const override { return display_name(); }
+
+  virtual const std::string get_icon_path() const override { return "images/engine/editor/textarray.png"; }
 
   virtual void draw(DrawingContext& context) override;
   virtual void update(float dt_sec) override;
-  virtual bool is_singleton() const override { return true; }
   virtual bool is_saveable() const override { return false; }
 
   void set_text(const std::string& text);
   void set_font(const std::string& name);
+  void grow_in(float fadetime);
+  void grow_out(float fadetime);
   void fade_in(float fadetime);
   void fade_out(float fadetime);
   void set_visible(bool visible);
   void set_centered(bool centered);
+  void set_front_fill_color(Color frontfill);
+  void set_back_fill_color(Color backfill);
+  void set_text_color(Color textcolor);
+  void set_roundness(float roundness);
   bool is_visible();
 
   void set_anchor_point(AnchorPoint anchor) { m_anchor = anchor; }
   AnchorPoint get_anchor_point() const { return m_anchor; }
+  void set_anchor_offset(const Vector& offset) { m_anchor_offset = offset; }
+
+  float get_wrap_width() const { return m_wrap_width; }
+  void set_wrap_width(float width) { m_wrap_width = width; }
 
   void set_pos(const Vector& pos) { m_pos = pos; }
   const Vector& get_pos() const { return m_pos; }
@@ -60,12 +81,24 @@ private:
   FontPtr m_font;
   std::string m_text;
   std::string m_wrapped_text;
-  float m_fading;
+  float m_fade_progress;
   float m_fadetime;
   bool m_visible;
   bool m_centered;
   AnchorPoint m_anchor;
+  Vector m_anchor_offset;
   Vector m_pos;
+  float m_wrap_width;
+  Color m_front_fill_color;
+  Color m_back_fill_color;
+  Color m_text_color;
+  float m_roundness;
+  bool m_growing_in;
+  bool m_growing_out;
+  bool m_fading_in;
+  bool m_fading_out;
+  bool m_grower;
+  bool m_fader;
 
 private:
   TextObject(const TextObject&) = delete;

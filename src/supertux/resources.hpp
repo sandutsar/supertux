@@ -21,6 +21,7 @@
 #include <memory>
 #include <string>
 
+#include "util/gettext.hpp"
 #include "video/font_ptr.hpp"
 #include "video/surface_ptr.hpp"
 
@@ -30,6 +31,9 @@ class Resources final
 {
 public:
   static std::unique_ptr<MouseCursor> mouse_cursor;
+
+  /** Font that can display English glyphs */
+  static FontPtr default_font;
 
   /** Font used in the console */
   static FontPtr console_font;
@@ -60,10 +64,11 @@ public:
 public:
   static void load();
   static void unload();
+  static bool needs_custom_font(const tinygettext::Language& locale);
+  static std::string get_font_for_locale(const tinygettext::Language& locale);
 
 private:
   static std::string current_font;
-  static std::string get_font_for_locale(const std::string& locale);
 
 public:
   Resources();

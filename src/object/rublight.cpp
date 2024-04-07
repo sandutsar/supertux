@@ -21,6 +21,7 @@
 #include "sprite/sprite.hpp"
 #include "sprite/sprite_manager.hpp"
 #include "supertux/constants.hpp"
+#include "supertux/flip_level_transformer.hpp"
 #include "video/color.hpp"
 #include "util/reader_mapping.hpp"
 
@@ -32,11 +33,11 @@ RubLight::RubLight(const ReaderMapping& mapping) :
   stored_energy(0),
   light(SpriteManager::current()->create(
     "images/objects/lightmap_light/lightmap_light.sprite")),
-  color(1.0f, 0.5f, 0.3f),
+  color(1.f, 1.f, 1.f),
   fading_speed(5.0f),
   strength_multiplier(1.0f)
 {
-  m_sprite->set_action("normal");
+  set_action("inactive");
 
   std::vector<float> vColor;
   if (mapping.get("color", vColor))
@@ -48,7 +49,7 @@ RubLight::RubLight(const ReaderMapping& mapping) :
 ObjectSettings
 RubLight::get_settings()
 {
-  ObjectSettings result = MovingObject::get_settings();
+  ObjectSettings result = MovingSprite::get_settings();
 
   // The object settings and their default values shown in the Editor
   result.add_color(_("Color"), &color, "color", Color(1.0f, 0.5f, 0.3f));
@@ -94,6 +95,7 @@ void RubLight::rub(float strength)
 {
   if (strength <= 0)
     return;
+  set_action("active");
   strength *= strength_multiplier;
   stored_energy = std::max<float>(stored_energy, strength);
   if (state == STATE_DARK)
@@ -103,9 +105,14 @@ void RubLight::rub(float strength)
 void
 RubLight::update(float dt_sec)
 {
+  if (m_sprite->get_action() == "active" && m_sprite->animation_done())
+  {
+    set_action("inactive");
+  }
+
   switch (state) {
   case STATE_DARK:
-    // Nothing to do
+    set_action("inactive");
     break;
 
   case STATE_FADING:
@@ -136,7 +143,14 @@ RubLight::draw(DrawingContext& context)
     light->draw(context.light(), get_pos(), m_layer);
   }
 
-  m_sprite->draw(context.color(), get_pos(), m_layer);
+  m_sprite->draw(context.color(), get_pos(), m_layer, m_flip);
+}
+
+void
+RubLight::on_flip(float height)
+{
+  MovingSprite::on_flip(height);
+  FlipLevelTransformer::transform_flip(m_flip);
 }
 
 /* EOF */

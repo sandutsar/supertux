@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the SuperTux package.
 # 
 # Translators:
-# Adharsh 01 <adharshps01@gmail.com>, 2019
-# Adithyan S S <AssG.Fight.Fairy@gmail.com>, 2020
+# Adharsh P S <adharshps01@gmail.com>, 2019
+# Adithyan S S <AssG.Fight.Fairy@gmail.com>, 2020,2023
 msgid ""
 msgstr ""
 "Project-Id-Version: SuperTux\n"
 "Report-Msgid-Bugs-To: https://github.com/SuperTux/supertux/issues\n"
-"POT-Creation-Date: 2018-11-05 23:45+0100\n"
-"PO-Revision-Date: 2020-12-21 07:02+0000\n"
-"Last-Translator: Adithyan S S <AssG.Fight.Fairy@gmail.com>\n"
-"Language-Team: Malayalam (http://www.transifex.com/arctic-games/supertux/language/ml/)\n"
+"POT-Creation-Date: 2024-03-03 03:26+0100\n"
+"PO-Revision-Date: 2013-08-10 23:04+0000\n"
+"Last-Translator: Adithyan S S <AssG.Fight.Fairy@gmail.com>, 2020,2023\n"
+"Language-Team: Malayalam (http://app.transifex.com/arctic-games/supertux/language/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,15 +21,15 @@ msgstr ""
 
 #: data/levels/bonus1/abednego-level1.stl:3
 msgid "Flight Test"
-msgstr "പറക്കുന്നതിന്റെ പരീക്ഷണം"
+msgstr "വ്യോമയാനപ്പരീക്ഷണം"
 
 #: data/levels/bonus1/abednego-level2.stl:3
 msgid "Dungeons but no Dragons"
-msgstr "ഇരുട്ടറയുണ്ട് പക്ഷെ ഡ്രാഗണുകൾ ഇല്ല"
+msgstr "അസുരന്മാർ ഇല്ല അന്ധകാരം ഉണ്ട്"
 
 #: data/levels/bonus1/abednego-level3.stl:3
 msgid "Lies!"
-msgstr "നുണകൾ"
+msgstr "നുണകൾ!"
 
 #: data/levels/bonus1/abednego-level4.stl:3
 msgid "Train Leaves in One Minute"
@@ -37,7 +37,7 @@ msgstr "തീവണ്ടി ഒരു മിനിറ്റിനകം പോ
 
 #: data/levels/bonus1/bonus-level1.stl:3
 msgid "Bonus Dias!"
-msgstr "ബോണസ് വേദി"
+msgstr "ബോണസ് വേദി!"
 
 #: data/levels/bonus1/bonus-level2.stl:3
 msgid "Castle Gate"
@@ -45,7 +45,7 @@ msgstr "കൊട്ടാരത്തിന്റെ കവാടം"
 
 #: data/levels/bonus1/bonus-level3.stl:3
 msgid "A Long Way Home"
-msgstr "വീട്ടിലേക്കുള്ള നീണ്ട പാത"
+msgstr "നീണ്ട പാതവഴി വീട്ടിലേക്ക്"
 
 #: data/levels/bonus1/bonus-level4.stl:3
 msgid "Bonus Island Castle"
@@ -53,7 +53,7 @@ msgstr "ബോണസ് ദ്വീപ് കൊട്ടാരം"
 
 #: data/levels/bonus1/bonus-level5.stl:3
 msgid "Area 42"
-msgstr "മേഖല 42"
+msgstr "ഏരിയ 42"
 
 #: data/levels/bonus1/extro.txt:3
 msgid ""
@@ -84,11 +84,11 @@ msgstr "-അഭിനന്ദനങ്ങൾ!\n\n#ബോണസ് ദ്വീ�
 
 #: data/levels/bonus1/matr1x-level1.stl:3
 msgid "Pipe Down Over There"
-msgstr "അവിടെ പൈപ് താഴേക്ക്"
+msgstr "താഴേക്കങ്ങോട്ട് പൈപ്പ് ആണ്  "
 
 #: data/levels/bonus1/matr1x-level2.stl:3
 msgid "Something Fishy"
-msgstr ""
+msgstr "ഈ കളി മീൻകളി "
 
 #: data/levels/bonus1/matr1x-level3.stl:3
 msgid "Fire In The Sky"
@@ -102,6 +102,12 @@ msgstr "ഞാൻ മുമ്പ് ഇവിടെ വന്നിട്ടു
 msgid "Bad Guys Stink!"
 msgstr ""
 
+#: data/levels/bonus1/thompson-level2.stl:96
+msgid ""
+"#These levels were made Swimming-Ready by Serano and revamped by "
+"AllyTheOcelot"
+msgstr ""
+
 #: data/levels/bonus1/torfi-level1.stl:3
 msgid "A good start"
 msgstr "ഒരു നല്ല തുടക്കം"
@@ -110,9 +116,9 @@ msgstr "ഒരു നല്ല തുടക്കം"
 msgid "Too easy"
 msgstr "വളരെ എളുപ്പം"
 
-#: data/levels/bonus1/torfi-level2.stl:42
-msgid "#All these levels were upgraded to milestone 2 design by Hume2."
-msgstr "# ഈ ലെവലുകളെല്ലാം Hume2 നാഴികക്കല്ല് 2 രൂപകൽപ്പനയിലേക്ക് അപ്‌ഗ്രേഡുചെയ്‌തു."
+#: data/levels/bonus1/torfi-level2.stl:56
+msgid "#All these levels were upgraded for milestone 2 by Hume."
+msgstr ""
 
 #: data/levels/bonus1/torfi-level3.stl:3
 msgid "Still too easy"
@@ -142,62 +148,62 @@ msgstr "മഞ്ഞുമലയുടെ അറ്റം"
 msgid "Bonus Island I"
 msgstr "ബോണസ് ദ്വീപ് 1"
 
-#: data/levels/bonus1/worldmap.stwm:12
+#: data/levels/bonus1/worldmap.stwm:127
 msgid "You found a secret place!"
 msgstr "നിങ്ങൾ ഒരു രഹസ്യ സ്ഥലം കണ്ടെത്തി!"
 
-#: data/levels/bonus1/worldmap.stwm:20
+#: data/levels/bonus1/worldmap.stwm:135
 msgid "Hint: Use igloos to get back here."
 msgstr "സൂചന: ഇവിടെ തിരിച്ചെത്താൻ ഇഗ്ലൂസ് ഉപയോഗിക്കുക."
 
-#: data/levels/bonus1/worldmap.stwm:29
+#: data/levels/bonus1/worldmap.stwm:144
 msgid "Warp to Matr1x' Sector"
 msgstr "മാട്ര്1x സെക്ടറിലേക്ക് പോകുക"
 
-#: data/levels/bonus1/worldmap.stwm:36 data/levels/bonus1/worldmap.stwm:110
+#: data/levels/bonus1/worldmap.stwm:151 data/levels/bonus1/worldmap.stwm:228
 msgid "Warp to Thompson's Domain"
 msgstr "തോം‌പ്സണിന്റെ ഡൊമെയ്‌നിലേക്ക് പോകുക"
 
-#: data/levels/bonus1/worldmap.stwm:43 data/levels/bonus1/worldmap.stwm:104
+#: data/levels/bonus1/worldmap.stwm:158 data/levels/bonus1/worldmap.stwm:221
 msgid "Leave the SuperTux Team Island"
 msgstr "സൂപ്പർ‌ടക്സ് ടീം ദ്വീപ് വിടുക"
 
-#: data/levels/bonus1/worldmap.stwm:50
+#: data/levels/bonus1/worldmap.stwm:165
 msgid "Warp to Abednego's Area"
 msgstr "അബെഡ്‌നെഗോയുടെ പ്രദേശത്തേക്ക് പോകുക"
 
-#: data/levels/bonus1/worldmap.stwm:57 data/levels/bonus1/worldmap.stwm:143
+#: data/levels/bonus1/worldmap.stwm:172 data/levels/bonus1/worldmap.stwm:262
 msgid "Leave Torfi's Territory"
 msgstr "ടോർഫിയുടെ പ്രദേശം വിടുക"
 
-#: data/levels/bonus1/worldmap.stwm:64 data/levels/bonus1/worldmap.stwm:90
+#: data/levels/bonus1/worldmap.stwm:179 data/levels/bonus1/worldmap.stwm:207
 msgid "Leave Abednego's Area"
 msgstr "അബെഡ്‌നെഗോയുടെ പ്രദേശം വിടുക"
 
-#: data/levels/bonus1/worldmap.stwm:70 data/levels/bonus1/worldmap.stwm:117
+#: data/levels/bonus1/worldmap.stwm:186 data/levels/bonus1/worldmap.stwm:234
 msgid "Leave Thompson's Domain"
 msgstr "തോംപ്സണിന്റെ ഡൊമെയ്ൻ വിടുക"
 
-#: data/levels/bonus1/worldmap.stwm:77
+#: data/levels/bonus1/worldmap.stwm:193
 msgid "Back to Matr1x' Sector"
-msgstr "മാട്ര്1x സെക്ടറിലേക്ക് മടങ്ങുക"
+msgstr "മാട്ര്1x സെക്ടറിലേക്ക് മടങ്ങുക"
 
-#: data/levels/bonus1/worldmap.stwm:83
+#: data/levels/bonus1/worldmap.stwm:200
 msgid "Warp home"
 msgstr "വീട്ടിലേക്ക് പോകുക"
 
-#: data/levels/bonus1/worldmap.stwm:97
+#: data/levels/bonus1/worldmap.stwm:214
 msgid "Warp to the SuperTux Team Island"
 msgstr ""
 
-#: data/levels/bonus1/worldmap.stwm:123
+#: data/levels/bonus1/worldmap.stwm:241
 msgid "Leave Matr1x' Sector"
 msgstr "മാട്ര്1x സെക്റ്റർ വിടുക"
 
-#: data/levels/bonus1/worldmap.stwm:129
+#: data/levels/bonus1/worldmap.stwm:248
 msgid "Continue Matr1x' Sector"
 msgstr "Matr1x' സെക്റ്റർ തുടരുക"
 
-#: data/levels/bonus1/worldmap.stwm:136
+#: data/levels/bonus1/worldmap.stwm:255
 msgid "Warp to Torfi's Territory"
 msgstr ""

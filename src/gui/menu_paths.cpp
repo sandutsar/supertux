@@ -24,7 +24,7 @@
 #include "object/path_object.hpp"
 #include "supertux/sector.hpp"
 
-auto on_select = [](std::string path, PathObject& target, std::string path_ref) {
+auto on_select = [](const std::string& path, PathObject& target, const std::string& path_ref) {
   return [path, &target, path_ref] {
     auto dialog = std::make_unique<Dialog>();
     dialog->add_default_button(_("Clone"), [path, path_ref] {
@@ -32,14 +32,16 @@ auto on_select = [](std::string path, PathObject& target, std::string path_ref) 
       auto* into = Editor::current()->get_sector()->get_object_by_name<PathGameObject>(path_ref);
       if (from && into) {
         from->copy_into(*into);
+        MenuManager::instance().pop_menu();
       } else {
         log_warning << "Could not copy path, misses " << (from ? "" : "'from'")
                     << (into ? "" : "'into'") << std::endl;
-        Dialog::show_message(_("An error occured and the game could\nnot clone the path. Please contact\nthe developers for support."));
+        Dialog::show_message(_("An error occurred and the game could\nnot clone the path. Please contact\nthe developers for support."));
       }
     });
     dialog->add_button(_("Bind"), [path, &target] {
       target.editor_set_path_by_ref(path);
+        MenuManager::instance().pop_menu();
     });
     dialog->add_cancel_button(_("Cancel"));
     dialog->set_text("Do you wish to clone the path to edit it separately,\nor do you want to bind both paths together\nso that any edit on one edits the other?");

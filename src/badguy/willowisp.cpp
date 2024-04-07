@@ -28,9 +28,9 @@
 #include "util/reader_mapping.hpp"
 #include "util/writer.hpp"
 
-static const float FLYSPEED = 64.0f; /**< speed in px per second */
-static const float TRACK_RANGE = 384.0f; /**< at what distance to start tracking the player */
-static const float VANISH_RANGE = 512.0f; /**< at what distance to stop tracking and vanish */
+static const float FLYSPEED = 64.0f; /**< Speed in pixels per second. */
+static const float TRACK_RANGE = 384.0f; /**< Distance at which to start tracking the player. */
+static const float VANISH_RANGE = 512.0f; /**< Distance at which to stop tracking and vanish. */
 static const std::string SOUNDFILE = "sounds/willowisp.wav";
 
 WillOWisp::WillOWisp(const ReaderMapping& reader) :
@@ -85,7 +85,7 @@ WillOWisp::WillOWisp(const ReaderMapping& reader) :
   m_sprite->set_color(m_color);
   m_glowing = true;
 
-  m_sprite->set_action("idle");
+  set_action("idle");
 }
 
 void
@@ -99,6 +99,8 @@ WillOWisp::finish_construction()
 void
 WillOWisp::after_editor_set()
 {
+  BadGuy::after_editor_set();
+
   m_lightsprite->set_color(Color(m_color.red * 0.2f,
                                  m_color.green * 0.2f,
                                  m_color.blue * 0.2f));
@@ -106,22 +108,11 @@ WillOWisp::after_editor_set()
 }
 
 void
-WillOWisp::editor_delete()
-{
-  auto path_obj = get_path_gameobject();
-  if(path_obj != nullptr)
-  {
-    path_obj->editor_delete();
-  }
-  GameObject::editor_delete();
-}
-
-void
 WillOWisp::active_update(float dt_sec)
 {
   if (Editor::is_active() && get_path() && get_path()->is_valid()) {
     get_walker()->update(dt_sec);
-    set_pos(get_walker()->get_pos());
+    set_pos(get_walker()->get_pos(m_col.m_bbox.get_size(), m_path_handle));
     return;
   }
 
@@ -174,7 +165,7 @@ WillOWisp::active_update(float dt_sec)
       if (get_walker() == nullptr)
         return;
       get_walker()->update(dt_sec);
-      m_col.set_movement(get_walker()->get_pos() - get_pos());
+      m_col.set_movement(get_walker()->get_pos(m_col.m_bbox.get_size(), m_path_handle) - get_pos());
       if (m_mystate == STATE_PATHMOVING_TRACK && glm::length(dist) <= m_track_range) {
         m_mystate = STATE_TRACKING;
       }
@@ -224,7 +215,7 @@ void
 WillOWisp::vanish()
 {
   m_mystate = STATE_VANISHING;
-  m_sprite->set_action("vanishing", 1);
+  set_action("vanishing", 1);
   set_colgroup_active(COLGROUP_DISABLED);
 
   if (m_parent_dispenser != nullptr)
@@ -256,14 +247,14 @@ WillOWisp::collision_player(Player& player, const CollisionHit& ) {
     return ABORT_MOVE;
 
   m_mystate = STATE_WARPING;
-  m_sprite->set_action("warping", 1);
+  set_action("warping", 1);
 
   if (!m_hit_script.empty()) {
     Sector::get().run_script(m_hit_script, "hit-script");
   } else {
     GameSession::current()->respawn(m_target_sector, m_target_spawnpoint);
   }
-  SoundManager::current()->play("sounds/warp.wav");
+  SoundManager::current()->play("sounds/warp.wav", get_pos());
 
   return CONTINUE;
 }
@@ -316,7 +307,6 @@ WillOWisp::get_settings()
 {
   ObjectSettings result = BadGuy::get_settings();
 
-  result.add_direction(_("Direction"), &m_dir);
   result.add_text(_("Sector"), &m_target_sector, "sector");
   result.add_text(_("Spawnpoint"), &m_target_spawnpoint, "spawnpoint");
   result.add_text(_("Hit script"), &m_hit_script, "hit-script");
@@ -329,6 +319,7 @@ WillOWisp::get_settings()
   if (get_path())
   {
     result.add_bool(_("Adapt Speed"), &get_path()->m_adapt_speed, {}, {});
+    result.add_path_handle(_("Handle"), m_path_handle, "handle");
   }
 
   result.reorder({"sector", "spawnpoint", "flyspeed", "track-range", "hit-script", "vanish-range", "name", "path-ref", "region", "x", "y"});
@@ -358,6 +349,19 @@ WillOWisp::move_to(const Vector& pos)
     get_path()->move_by(shift);
   }
   set_pos(pos);
+}
+
+std::vector<Direction>
+WillOWisp::get_allowed_directions() const
+{
+  return {};
+}
+
+void
+WillOWisp::on_flip(float height)
+{
+  BadGuy::on_flip(height);
+  PathObject::on_flip();
 }
 
 /* EOF */

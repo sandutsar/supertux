@@ -16,6 +16,8 @@
 
 #include "object/custom_particle_system_file.hpp"
 
+#include <algorithm>
+
 #include "editor/editor.hpp"
 #include "gui/menu_manager.hpp"
 #include "util/reader.hpp"
@@ -33,6 +35,7 @@ CustomParticleSystemFile::CustomParticleSystemFile(const ReaderMapping& reader) 
   m_filename()
 {
   reader.get("file", m_filename, "default.stcp");
+  std::replace(m_filename.begin(), m_filename.end(), '\\', '/');
 
   update_data();
   reinit_textures();
@@ -50,7 +53,7 @@ CustomParticleSystemFile::get_settings()
   result.add_file(_("File"), &m_filename, "file", {}, {".stcp"}, "/particles");
   result.add_particle_editor();
 
-  // It is assumed get_settings() is called whenever the menu is opened
+  // It is assumed get_settings() is called whenever the menu is opened.
   Editor::current()->m_particle_editor_filename = &m_filename;
 
   result.add_remove();

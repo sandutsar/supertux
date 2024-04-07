@@ -17,35 +17,67 @@
 #ifndef HEADER_SUPERTUX_SUPERTUX_GAME_SESSION_HPP
 #define HEADER_SUPERTUX_SUPERTUX_GAME_SESSION_HPP
 
+#include "supertux/screen.hpp"
+#include "util/currenton.hpp"
+
 #include <memory>
+#include <unordered_map>
 #include <vector>
+
 #include <squirrel.h>
 
 #include "math/vector.hpp"
 #include "squirrel/squirrel_scheduler.hpp"
+#include "squirrel/squirrel_util.hpp"
 #include "supertux/game_object.hpp"
-#include "supertux/game_session_recorder.hpp"
 #include "supertux/player_status.hpp"
-#include "supertux/screen.hpp"
 #include "supertux/sequence.hpp"
-#include "util/currenton.hpp"
+#include "supertux/timer.hpp"
 #include "video/surface_ptr.hpp"
 
 class CodeController;
 class DrawingContext;
 class EndSequence;
 class Level;
+class Player;
 class Sector;
 class Statistics;
 class Savegame;
 
 /** Screen that runs a Level, where Players run and jump through Sectors. */
 class GameSession final : public Screen,
-                          public GameSessionRecorder,
                           public Currenton<GameSession>
 {
+private:
+  struct SpawnPoint
+  {
+    /* If a spawnpoint is set, the spawn position shall not, and vice versa. */
+    SpawnPoint(const std::string& sector_,
+               const Vector& position_,
+               bool is_checkpoint_ = false) :
+      sector(sector_),
+      spawnpoint(),
+      position(position_),
+      is_checkpoint(is_checkpoint_)
+    {}
+    SpawnPoint(const std::string& sector_,
+               const std::string& spawnpoint_,
+               bool is_checkpoint_ = false) :
+      sector(sector_),
+      spawnpoint(spawnpoint_),
+      position(),
+      is_checkpoint(is_checkpoint_)
+    {}
+
+    std::string sector;
+    std::string spawnpoint;
+    Vector position;
+    bool is_checkpoint;
+  };
+
 public:
-  GameSession(const std::string& levelfile, Savegame& savegame, Statistics* statistics = nullptr);
+  GameSession(const std::string& levelfile, Savegame& savegame, Statistics* statistics = nullptr,
+              bool preserve_music = false);
 
   virtual void draw(Compositor& compositor) override;
   virtual void update(float dt_sec, const Controller& controller) override;
@@ -55,20 +87,27 @@ public:
 
   /** ends the current level */
   void finish(bool win = true);
-  void respawn(const std::string& sectorname, const std::string& spawnpointname,
-               const bool invincibility = false, const int invincibilityperiod = 0);
+  void respawn(const std::string& sectorname, const std::string& spawnpointname);
   void reset_level();
+
   void set_start_point(const std::string& sectorname,
                        const std::string& spawnpointname);
   void set_start_pos(const std::string& sectorname, const Vector& pos);
-  void set_reset_point(const std::string& sectorname, const Vector& pos);
-  std::string get_reset_point_sectorname() const { return m_reset_sector; }
+  void set_respawn_point(const std::string& sectorname,
+                         const std::string& spawnpointname);
+  void set_respawn_pos(const std::string& sectorname, const Vector& pos);
+  void clear_respawn_points();
 
-  Vector get_reset_point_pos() const { return m_reset_pos; }
+  const SpawnPoint& get_last_spawnpoint() const;
+
+  void set_checkpoint_pos(const std::string& sectorname, const Vector& pos);
+  const SpawnPoint* get_active_checkpoint_spawnpoint() const;
+
   Sector& get_current_sector() const { return *m_currentsector; }
   Level& get_current_level() const { return *m_level; }
 
-  void start_sequence(Sequence seq, const SequenceData* data = nullptr);
+  void start_sequence(Player* caller, Sequence seq, const SequenceData* data = nullptr);
+  void set_target_timer_paused(bool paused);
 
   /**
    * returns the "working directory" usually this is the directory where the
@@ -76,19 +115,13 @@ public:
    * resources for the current level/world
    */
   std::string get_working_directory() const;
-  int restart_level(bool after_death = false);
-  bool reset_button;
-  bool reset_checkpoint_button;
+  std::string get_level_file() const { return m_levelfile; }
+  bool has_active_sequence() const;
+  int restart_level(bool after_death = false, bool preserve_music = false);
 
   void toggle_pause();
   void abort_level();
   bool is_active() const;
-
-  /** Enters or leaves level editor mode */
-  void set_editmode(bool edit_mode = true);
-
-  /** Forces all Players to enter ghost mode */
-  void force_ghost_mode();
 
   Savegame& get_savegame() const { return m_savegame; }
 
@@ -102,14 +135,18 @@ private:
 
   void on_escape_press(bool force_quick_respawn);
 
+public:
+  bool reset_button;
+  bool reset_checkpoint_button;
+
+  bool m_prevent_death; /**< true if players should enter ghost mode instead of dying */
+
 private:
   std::unique_ptr<Level> m_level;
-  std::unique_ptr<Level> m_old_level;
   SurfacePtr m_statistics_backdrop;
 
   // scripts
-  typedef std::vector<HSQOBJECT> ScriptList;
-  ScriptList m_scripts;
+  SquirrelObjectList m_scripts;
 
   Sector* m_currentsector;
 
@@ -120,42 +157,36 @@ private:
 
   std::string m_levelfile;
 
-  // spawn point (the point where tux respawns at startup). Usually both "main".
-  // If m_start_spawnpoint is set, m_start_pos shall not, and vice versa.
-  std::string m_start_sector;
-  std::string m_start_spawnpoint;
-  Vector m_start_pos;
-
-  // reset point (the point where tux respawns if he dies)
-  std::string m_reset_sector;
-  Vector m_reset_pos;
+  // Spawnpoints
+  std::vector<SpawnPoint> m_spawnpoints;
+  const SpawnPoint* m_activated_checkpoint;
 
   // the sector and spawnpoint we should spawn after this frame
   std::string m_newsector;
   std::string m_newspawnpoint;
 
-  // Whether the player had invincibility before spawning in a new sector
-  bool m_pastinvincibility;
-  int m_newinvincibilityperiod;
-
   Statistics* m_best_level_statistics;
   Savegame& m_savegame;
 
+  // Note: m_play_time should reset when a level is restarted from the beginning
+  //       but NOT if Tux respawns at a checkpoint (for LevelTimes to work)
   float m_play_time; /**< total time in seconds that this session ran interactively */
 
-  bool m_edit_mode; /**< true if GameSession runs in level editor mode */
   bool m_levelintro_shown; /**< true if the LevelIntro screen was already shown */
 
   int m_coins_at_start; /** How many coins does the player have at the start */
-  BonusType m_bonus_at_start; /** What bonuses does the player have at the start */
-  int m_max_fire_bullets_at_start; /** How many fire bullets does the player have */
-  int m_max_ice_bullets_at_start; /** How many ice bullets does the player have */
+  std::vector<BonusType> m_boni_at_start; /** What boni does the player have at the start */
+  std::vector<int> m_max_fire_bullets_at_start; /** How many fire bullets does the player have */
+  std::vector<int> m_max_ice_bullets_at_start; /** How many ice bullets does the player have */
 
   bool m_active; /** Game active? **/
 
   bool m_end_seq_started;
+  bool m_pause_target_timer;
 
   std::unique_ptr<GameObject> m_current_cutscene_text;
+
+  Timer m_endsequence_timer;
 
 private:
   GameSession(const GameSession&) = delete;

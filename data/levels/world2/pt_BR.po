@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the SuperTux package.
 # 
 # Translators:
-# Jesusalva Jesusalva <jesusalva@themanaworld.org>, 2014
+# Jesusaves <jesusalva@themanaworld.org>, 2014
 # Daniela Ferraz <danielaafferraz@gmail.com>, 2013
 # Filipe Oliveira <contato@fmoliveira.com.br>, 2013
 # Herval Ribeiro <heraze@gmail.com>, 2006
-# Jesusalva Jesusalva <jesusalva@themanaworld.org>, 2020
-# Jesusalva Jesusalva <jesusalva@themanaworld.org>, 2018
-# Jesusalva Jesusalva <jesusalva@themanaworld.org>, 2015
+# Jesusaves <jesusalva@themanaworld.org>, 2020
+# Jesusaves <jesusalva@themanaworld.org>, 2018
+# Jesusaves <jesusalva@themanaworld.org>, 2021
+# Jesusaves <jesusalva@themanaworld.org>, 2015
 # Rui <xymarior@yandex.com>, 2016
 # Thiago Feldhaus <thiagofcf@gmail.com>, 2019
 # Victor Gonçalves <hotcyv@gmail.com>, 2015
@@ -17,36 +18,36 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SuperTux\n"
 "Report-Msgid-Bugs-To: https://github.com/SuperTux/supertux/issues\n"
-"POT-Creation-Date: 2020-05-24 08:12+0200\n"
-"PO-Revision-Date: 2020-08-06 18:48+0000\n"
-"Last-Translator: Jesusalva Jesusalva <jesusalva@themanaworld.org>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/arctic-games/supertux/language/pt_BR/)\n"
+"POT-Creation-Date: 2024-03-03 03:26+0100\n"
+"PO-Revision-Date: 2013-08-10 23:00+0000\n"
+"Last-Translator: Jesusaves <jesusalva@themanaworld.org>, 2021\n"
+"Language-Team: Portuguese (Brazil) (http://app.transifex.com/arctic-games/supertux/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: data/levels/world2/ancient_ruins.stl:3
 msgid "Ancient Ruins"
 msgstr "Ruínas Ancestrais"
 
-#: data/levels/world2/ancient_ruins.stl:1416
-#: data/levels/world2/ancient_ruins.stl:1424
-#: data/levels/world2/bouncy_coils.stl:237
-#: data/levels/world2/bouncy_coils.stl:245
-#: data/levels/world2/bye_bye_forest.stl:977
+#: data/levels/world2/ancient_ruins.stl:1463
+#: data/levels/world2/ancient_ruins.stl:1471
+#: data/levels/world2/bouncy_coils.stl:380
+#: data/levels/world2/bouncy_coils.stl:388
+#: data/levels/world2/bye_bye_forest.stl:1607
 #: data/levels/world2/crumbling_path.stl:278
 #: data/levels/world2/crumbling_path.stl:1651
-#: data/levels/world2/going_underground.stl:199
-#: data/levels/world2/going_underground.stl:1199
+#: data/levels/world2/going_underground.stl:246
+#: data/levels/world2/going_underground.stl:1249
 #: data/levels/world2/mouldy_grotto.stl:559
 #: data/levels/world2/penguin_grow_trees.stl:459
 #: data/levels/world2/penguin_grow_trees.stl:467
-#: data/levels/world2/through_dark.stl:309
-#: data/levels/world2/tux_builder.stl:283
-#: data/levels/world2/wooden_roots.stl:279
-#: data/levels/world2/worldmap.stwm:185
+#: data/levels/world2/through_dark.stl:361
+#: data/levels/world2/tux_builder.stl:384
+#: data/levels/world2/wooden_roots.stl:285
+#: data/levels/world2/worldmap.stwm:191
 msgid "You found a secret area!"
 msgstr "Você achou uma área secreta!"
 
@@ -74,7 +75,7 @@ msgstr "Escuridão Aguarda"
 msgid "Find the Bigger Fish!"
 msgstr "Encontre o Maior Peixe!"
 
-#: data/levels/world2/find_big_fish.stl:800
+#: data/levels/world2/find_big_fish.stl:1058
 msgid "-A big fish... for you."
 msgstr "-Um grande peixe... para você."
 
@@ -98,7 +99,7 @@ msgstr "Desafios das Árvores Fantasmas"
 msgid "Ghouls' Lair"
 msgstr "Covil dos Carniçais"
 
-#: data/levels/world2/ghouls_lair.stl:847
+#: data/levels/world2/ghouls_lair.stl:859
 msgid ""
 "#Lanterns are used to make magic blocks solid, so you're able to walk atop "
 "of them."
@@ -112,13 +113,13 @@ msgstr "Indo ao Subterrâneo"
 msgid "I Spy With My Little Eye"
 msgstr "Eu Vejo Com Meu Pequeno Olhinho"
 
-#: data/levels/world2/i_spy_with_my_little_eye.stl:221
+#: data/levels/world2/i_spy_with_my_little_eye.stl:218
 msgid ""
 "-Ispy\n"
 "#Ispys will activate things like platforms whenever Tux is in their sight."
 msgstr "-Olho Espião\n#Olhos Espiões irão ativar coisas como plataformas sempre que Tux estiver em suas linhas de visão."
 
-#: data/levels/world2/i_spy_with_my_little_eye.stl:595
+#: data/levels/world2/i_spy_with_my_little_eye.stl:674
 msgid "Hint: Use snails to break blocks!"
 msgstr "Dica: Use caracóis para quebrar blocos!"
 
@@ -130,7 +131,7 @@ msgstr "Como uma folha no Vento"
 msgid "Lost Village"
 msgstr "Vila Perdida"
 
-#: data/levels/world2/lost_village.stl:184
+#: data/levels/world2/lost_village.stl:185
 msgid "#Don't forget to hit the switch!"
 msgstr "#Não se esqueça de acertar o interruptor!"
 
@@ -170,10 +171,6 @@ msgid ""
 "#This does not work while jumping or falling!"
 msgstr "-Flor de Terra\n!images/powerups/earthflower/earth_flower-1.png\n#A flor de terra dará ao Tux a habilidade de petrificar ao apertar a tecla de AÇÃO e BAIXO ao mesmo tempo.\n#Isso não funciona enquanto estiver pulando ou caindo!"
 
-#: data/levels/world2/tower_cutscene.stl:3
-msgid "Tower Cutscene"
-msgstr "Cena da Torre"
-
 #: data/levels/world2/tower_of_ghosts.stl:3
 msgid "Tower Of Ghosts"
 msgstr "Torre Dos Fantasmas"
@@ -182,7 +179,7 @@ msgstr "Torre Dos Fantasmas"
 msgid "Tux the Builder"
 msgstr "Tux o Construtor"
 
-#: data/levels/world2/tux_builder.stl:80
+#: data/levels/world2/tux_builder.stl:77
 msgid ""
 "-Portable Objects:\n"
 "!images/objects/rock/rock.png\n"
@@ -194,10 +191,10 @@ msgstr "-Objetos Portáteis:\n!images/objects/rock/rock.png\n#Tux pode pegar cer
 msgid "Tux' Own Horror Show"
 msgstr "O Próprio Show De Horrores Do Tux"
 
-#: data/levels/world2/tux_own_horror_show.stl:790
+#: data/levels/world2/tux_own_horror_show.stl:947
 msgid ""
-"#Willow-wisps are small, annoying ghosts, which transport you to different, "
-"often dangerous places."
+"#Will o' Wisps are small, annoying ghosts, which transport you to different,"
+" often dangerous places."
 msgstr "#Chamas Perseguidoras são pequenos fantasmas irritantes, que transportam você para lugares diferentes, frequentemente perigosos."
 
 #: data/levels/world2/walking_leaves.stl:3
@@ -220,9 +217,9 @@ msgid "Wooden Roots"
 msgstr "Raízes de Madeira"
 
 #: data/levels/world2/worldmap.stwm:3
-msgid "Forest Island"
-msgstr "Ilha da Floresta"
+msgid "Rooted Forest"
+msgstr "Floresta Enraizada"
 
-#: data/levels/world2/worldmap.stwm:199
+#: data/levels/world2/worldmap.stwm:205
 msgid "To be continued..."
 msgstr "Continua..."

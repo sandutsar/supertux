@@ -20,6 +20,7 @@
 #include "object/player.hpp"
 #include "object/camera.hpp"
 #include "sprite/sprite.hpp"
+#include "supertux/flip_level_transformer.hpp"
 #include "supertux/sector.hpp"
 #include "supertux/tile.hpp"
 #include "math/random.hpp"
@@ -27,69 +28,66 @@
 
 FallBlock::FallBlock(const ReaderMapping& reader) :
   MovingSprite(reader, "images/objects/fallblock/cave-4x4.sprite", LAYER_OBJECTS, COLGROUP_STATIC),
-  state(IDLE),
-  physic(),
-  timer()
+  m_state(IDLE),
+  m_physic(),
+  m_timer()
 {
-	SoundManager::current()->preload("sounds/cracking.wav");
-	SoundManager::current()->preload("sounds/thud.ogg");
-	physic.enable_gravity(false);
+  SoundManager::current()->preload("sounds/cracking.wav");
+  SoundManager::current()->preload("sounds/thud.ogg");
+  m_physic.enable_gravity(false);
 }
 
 void
 FallBlock::update(float dt_sec)
 {
-  switch (state)
+  switch (m_state)
   {
     case IDLE:
-			set_group(COLGROUP_STATIC);
-	    if (found_victim_down())
-		  {
-        state = SHAKE;
-	      SoundManager::current()->play("sounds/cracking.wav");
-	      timer.start(0.5f);
-		  }
+      set_group(COLGROUP_STATIC);
+      if (found_victim_down())
+      {
+        m_state = SHAKE;
+        SoundManager::current()->play("sounds/cracking.wav", get_pos());
+        m_timer.start(0.5f);
+      }
       break;
     case SHAKE:
-	    if (timer.check())
+      if (m_timer.check())
       {
-        state = FALL;
-	      physic.reset();
-		    physic.enable_gravity(true);
+        m_state = FALL;
+        m_physic.reset();
+        m_physic.enable_gravity(true);
       }
       break;
     case FALL:
-      m_col.set_movement(physic.get_movement (dt_sec));
-      set_group(COLGROUP_MOVING_STATIC);
-      break;
     case LAND:
-      m_col.set_movement(physic.get_movement (dt_sec));
-	    set_group(COLGROUP_MOVING_STATIC);
+      m_col.set_movement(m_physic.get_movement (dt_sec));
+      set_group(COLGROUP_MOVING_STATIC);
       break;
   }
   for (auto& bumper : Sector::get().get_objects_by_type<Bumper>())
   {
-	  Rectf bumper_bbox = bumper.get_bbox();
-	  if ((bumper_bbox.get_left() < (m_col.m_bbox.get_right() + 8))
-	  && (bumper_bbox.get_right() > (m_col.m_bbox.get_left() - 8))
+    Rectf bumper_bbox = bumper.get_bbox();
+    if ((bumper_bbox.get_left() < (m_col.m_bbox.get_right() + 8))
+    && (bumper_bbox.get_right() > (m_col.m_bbox.get_left() - 8))
     && (bumper_bbox.get_bottom() > (m_col.m_bbox.get_top() - 8))
-	  && (bumper_bbox.get_top() < (m_col.m_bbox.get_bottom() + 8)))
+    && (bumper_bbox.get_top() < (m_col.m_bbox.get_bottom() + 8)))
     {
-      switch (state)
+      switch (m_state)
       {
-	      case IDLE:
-	        break;
-	      case SHAKE:
-	        break;
-	      case FALL:
-	        bumper.physic.enable_gravity(true);
-	        break;
-	      case LAND:
-	        bumper.physic.enable_gravity(false);
-	        bumper.physic.set_gravity_modifier(0.f);
-	        bumper.physic.set_velocity_y(0.f);
-	        bumper.physic.reset();
-	        break;
+        case IDLE:
+          break;
+        case SHAKE:
+          break;
+        case FALL:
+          bumper.get_physic().enable_gravity(true);
+          break;
+        case LAND:
+          bumper.get_physic().enable_gravity(false);
+          bumper.get_physic().set_gravity_modifier(0.f);
+          bumper.get_physic().set_velocity_y(0.f);
+          bumper.get_physic().reset();
+          break;
       }
     }
   }
@@ -98,21 +96,21 @@ FallBlock::update(float dt_sec)
 HitResponse
 FallBlock::collision(GameObject& other, const CollisionHit& hit)
 {
-	auto fallblock = dynamic_cast<FallBlock*> (&other);
-  if (fallblock && hit.bottom && (state == FALL || state == LAND))
+  auto fallblock = dynamic_cast<FallBlock*> (&other);
+  if (fallblock && hit.bottom && (m_state == FALL || m_state == LAND))
   {
-	  physic.set_velocity_y(0.0f);
-	  return CONTINUE;
+    m_physic.set_velocity_y(0.0f);
+    return CONTINUE;
   }
 
-	auto player = dynamic_cast<Player*>(&other);
-	if (state == IDLE && player && player->get_bbox().get_bottom() < m_col.m_bbox.get_top())
+  auto player = dynamic_cast<Player*>(&other);
+  if (m_state == IDLE && player && player->get_bbox().get_bottom() < m_col.m_bbox.get_top())
   {
-	  state = SHAKE;
-	  SoundManager::current()->play("sounds/cracking.wav");
-	  timer.start(0.5f);
-	}
-	return FORCE_MOVE;
+    m_state = SHAKE;
+    SoundManager::current()->play("sounds/cracking.wav", get_pos());
+    m_timer.start(0.5f);
+  }
+  return FORCE_MOVE;
 }
 
 void
@@ -120,14 +118,14 @@ FallBlock::collision_solid(const CollisionHit& hit)
 {
   if (hit.top || hit.bottom || hit.crush)
   {
-    physic.set_velocity(0.0f, 0.0f);
+    m_physic.set_velocity(0.0f, 0.0f);
   }
 
-  if (state == FALL && hit.bottom)
+  if (m_state == FALL && hit.bottom)
   {
     Sector::get().get_camera().shake(0.125f, 0.0f, 10.0f);
-    SoundManager::current()->play("sounds/thud.ogg");
-    state = LAND;
+    SoundManager::current()->play("sounds/thud.ogg", get_pos());
+    m_state = LAND;
   }
 }
 
@@ -136,12 +134,12 @@ FallBlock::draw(DrawingContext& context)
 {
   Vector pos = get_pos();
   // shaking
-  if (state == SHAKE)
+  if (m_state == SHAKE)
   {
     pos.x += static_cast<float>(graphicsRandom.rand(-8, 8));
-	  pos.y += static_cast<float>(graphicsRandom.rand(-5, 5));
+    pos.y += static_cast<float>(graphicsRandom.rand(-5, 5));
   }
-  m_sprite->draw(context.color(), pos, m_layer);
+  MovingSprite::draw(context);
 }
 
 bool
@@ -162,3 +160,12 @@ FallBlock::found_victim_down() const
   }
   return false;
 }
+
+void
+FallBlock::on_flip(float height)
+{
+  MovingSprite::on_flip(height);
+  FlipLevelTransformer::transform_flip(m_flip);
+}
+
+/* EOF */

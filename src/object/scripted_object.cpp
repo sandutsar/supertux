@@ -20,6 +20,7 @@
 #include "math/random.hpp"
 #include "object/player.hpp"
 #include "sprite/sprite.hpp"
+#include "supertux/flip_level_transformer.hpp"
 #include "supertux/sector.hpp"
 #include "util/reader.hpp"
 #include "util/reader_mapping.hpp"
@@ -64,7 +65,6 @@ ScriptedObject::get_settings()
 
   ObjectSettings result = MovingSprite::get_settings();
 
-  result.add_int(_("Z-pos"), &m_layer, "z-pos", LAYER_OBJECTS);
   //result.add_float("width", &new_size.x, "width", OPTION_HIDDEN);
   //result.add_float("height", &new_size.y, "height", OPTION_HIDDEN);
   result.add_bool(_("Solid"), &solid, "solid", true);
@@ -156,18 +156,6 @@ ScriptedObject::enable_gravity(bool f)
 }
 
 void
-ScriptedObject::set_action(const std::string& animation)
-{
-  m_sprite->set_action(animation);
-}
-
-std::string
-ScriptedObject::get_action() const
-{
-  return m_sprite->get_action();
-}
-
-void
 ScriptedObject::update(float dt_sec)
 {
   if (!physic_enabled)
@@ -183,10 +171,9 @@ ScriptedObject::update(float dt_sec)
 void
 ScriptedObject::draw(DrawingContext& context)
 {
-  if (!visible)
-    return;
+  if (!visible) return;
 
-  m_sprite->draw(context.color(), get_pos(), m_layer);
+  MovingSprite::draw(context);
 }
 
 void
@@ -216,6 +203,14 @@ ScriptedObject::collision(GameObject& other, const CollisionHit& )
   }
 
   return FORCE_MOVE;
+}
+
+void
+ScriptedObject::on_flip(float height)
+{
+  MovingSprite::on_flip(height);
+  if(!physic_enabled)
+    FlipLevelTransformer::transform_flip(m_flip);
 }
 
 /* EOF */

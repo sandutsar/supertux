@@ -18,7 +18,7 @@
 
 #include <physfs.h>
 #include <sstream>
-#include <boost/format.hpp>
+#include <fmt/format.h>
 
 #include "editor/editor.hpp"
 #include "gui/menu_item.hpp"
@@ -26,6 +26,7 @@
 #include "physfs/util.hpp"
 #include "supertux/levelset.hpp"
 #include "supertux/menu/editor_levelset_select_menu.hpp"
+#include "supertux/menu/editor_delete_levelset_menu.hpp"
 #include "supertux/menu/menu_storage.hpp"
 #include "supertux/world.hpp"
 #include "util/file_system.hpp"
@@ -54,20 +55,18 @@ void
 EditorLevelsetSelectMenu::initialize()
 {
   Editor::current()->m_deactivate_request = true;
+  m_contrib_worlds.clear();
+
   // Generating contrib levels list by making use of Level Subset
   std::vector<std::string> level_worlds;
-
-  std::unique_ptr<char*, decltype(&PHYSFS_freeList)>
-    files(PHYSFS_enumerateFiles("levels"),
-          PHYSFS_freeList);
-  for (const char* const* filename = files.get(); *filename != nullptr; ++filename)
-  {
-    std::string filepath = FileSystem::join("levels", *filename);
+  
+  physfsutil::enumerate_files("levels", [&level_worlds](const auto& filename) {
+    std::string filepath = FileSystem::join("levels", filename);
     if (physfsutil::is_directory(filepath))
     {
       level_worlds.push_back(filepath);
     }
-  }
+  });
 
   add_label(_("Choose World"));
   add_hl();
@@ -84,7 +83,7 @@ EditorLevelsetSelectMenu::initialize()
       }
       if (!world->is_levelset() && !world->is_worldmap())
       {
-        log_warning << level_world << ": unknown World type" << std::endl;
+        log_warning << level_world << ": Unknown World type." << std::endl;
         continue;
       }
       auto title = world->get_title();
@@ -96,9 +95,9 @@ EditorLevelsetSelectMenu::initialize()
                           new Levelset(level_world, /* recursively = */ true));
       int level_count = levelset->get_num_levels();
       std::ostringstream level_title;
-      level_title << title << " (" <<
-        boost::format(__("%d level", "%d levels", level_count)) % level_count <<
-        ")";
+      level_title << title << " ("
+                  << fmt::format(fmt::runtime(__("{} level", "{} levels", level_count)), level_count)
+                  << ")";
       add_entry(i++, level_title.str());
       m_contrib_worlds.push_back(level_world);
     }
@@ -111,6 +110,7 @@ EditorLevelsetSelectMenu::initialize()
 
   add_hl();
   add_submenu(_("Create World"), MenuStorage::EDITOR_NEW_LEVELSET_MENU);
+  add_entry(-3, _("Delete World"));
   add_back(_("Back"),-2);
 }
 void EditorLevelsetSelectMenu::reload_menu()
@@ -126,6 +126,11 @@ EditorLevelsetSelectMenu::menu_action(MenuItem& item)
   {
     std::unique_ptr<Menu> menu = std::unique_ptr<Menu>(new EditorLevelSelectMenu(
                                  World::from_directory(m_contrib_worlds[item.get_id()]), this));
+    MenuManager::instance().push_menu(std::move(menu));
+  }
+  else if (item.get_id() == -3)
+  {
+    std::unique_ptr<EditorDeleteLevelsetMenu> menu = std::make_unique<EditorDeleteLevelsetMenu>(this);
     MenuManager::instance().push_menu(std::move(menu));
   }
 }

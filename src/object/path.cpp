@@ -36,7 +36,7 @@ string_to_walk_mode(const std::string& mode_string)
   else if (mode_string == "circular")
     return WalkMode::CIRCULAR;
   else {
-    log_warning << "Unknown path mode '" << mode_string << "'found. Using oneshot instead.";
+    log_warning << "Unknown path mode '" << mode_string << "' found. Using oneshot instead." << std::endl;
     return WalkMode::ONE_SHOT;
   }
 }
@@ -51,24 +51,26 @@ walk_mode_to_string(WalkMode walk_mode)
   else if (walk_mode == WalkMode::CIRCULAR)
     return "circular";
   else {
-    log_warning << "Unknown path mode found. Using oneshot instead.";
+    log_warning << "Unknown path mode found. Using oneshot instead." << std::endl;
     return "oneshot";
   }
 }
 
-Path::Path() :
+Path::Path(PathGameObject& parent) :
+  m_parent_gameobject(parent),
   m_nodes(),
   m_mode(WalkMode::CIRCULAR),
   m_adapt_speed()
 {
 }
 
-Path::Path(const Vector& pos) :
+Path::Path(const Vector& pos, PathGameObject& parent) :
+  m_parent_gameobject(parent),
   m_nodes(),
   m_mode(),
   m_adapt_speed()
 {
-  Node first_node;
+  Node first_node(this);
   first_node.position = pos;
   first_node.bezier_before = pos;
   first_node.bezier_after = pos;
@@ -95,7 +97,7 @@ Path::read(const ReaderMapping& reader)
       ReaderMapping node_mapping = iter.as_mapping();
 
       // each new node will inherit all values from the last one
-      Node node;
+      Node node(this);
       node.time = 1;
       node.speed = 0;
       node.easing = EaseNone;
@@ -140,10 +142,19 @@ Path::save(Writer& writer)
     writer.start_list("node");
     writer.write("x", nod.position.x);
     writer.write("y", nod.position.y);
-    writer.write("bezier_before_x", nod.bezier_before.x);
-    writer.write("bezier_before_y", nod.bezier_before.y);
-    writer.write("bezier_after_x", nod.bezier_after.x);
-    writer.write("bezier_after_y", nod.bezier_after.y);
+
+    if (nod.bezier_before.x != nod.position.x || nod.bezier_before.y != nod.position.y)
+    {
+      writer.write("bezier_before_x", nod.bezier_before.x);
+      writer.write("bezier_before_y", nod.bezier_before.y);
+    }
+
+    if (nod.bezier_after.x != nod.position.x || nod.bezier_after.y != nod.position.y)
+    {
+      writer.write("bezier_after_x", nod.bezier_after.x);
+      writer.write("bezier_after_y", nod.bezier_after.y);
+    }
+
     if (nod.time != 1.0f) {
       writer.write("time", nod.time);
     }
@@ -218,7 +229,7 @@ Path::edit_path()
   for (auto i = m_nodes.begin(); i != m_nodes.end(); ++i) {
     auto& before = Sector::get().add<BezierMarker>(&(*i), &(i->bezier_before));
     auto& after = Sector::get().add<BezierMarker>(&(*i), &(i->bezier_after));
-    auto& nm = Sector::get().add<NodeMarker>(this, i, id, before.get_uid(), after.get_uid());
+    auto& nm = Sector::get().add<NodeMarker>(i, id, before.get_uid(), after.get_uid());
     before.set_parent(nm.get_uid());
     after.set_parent(nm.get_uid());
     id++;
@@ -229,6 +240,16 @@ bool
 Path::is_valid() const
 {
   return !m_nodes.empty();
+}
+
+void
+Path::on_flip(float height)
+{
+  for (auto& node : m_nodes) {
+    node.position.y = height - node.position.y;
+    node.bezier_before.y = height - node.bezier_before.y;
+    node.bezier_after.y = height - node.bezier_after.y;
+  }
 }
 
 /* EOF */

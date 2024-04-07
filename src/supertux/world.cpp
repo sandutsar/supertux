@@ -17,10 +17,9 @@
 #include "supertux/world.hpp"
 
 #include <physfs.h>
+#include <sstream>
 
 #include "physfs/util.hpp"
-#include "supertux/gameconfig.hpp"
-#include "supertux/globals.hpp"
 #include "util/file_system.hpp"
 #include "util/log.hpp"
 #include "util/reader.hpp"
@@ -53,7 +52,8 @@ World::from_directory(const std::string& directory)
     info.get("description", world->m_description);
     info.get("levelset", world->m_is_levelset, true);
     info.get("hide-from-contribs", world->m_hide_from_contribs, false);
-
+    info.get("contrib-type", world->m_contrib_type, "user");
+    info.get("title-level", world->m_title_level);
     return world;
   }
   catch (const std::exception& err)
@@ -103,8 +103,16 @@ World::World(const std::string& directory) :
   m_description(),
   m_is_levelset(true),
   m_basedir(directory),
-  m_hide_from_contribs(false)
+  m_hide_from_contribs(false),
+  m_contrib_type(),
+  m_title_level()
 {
+}
+
+std::string
+World::get_basename() const
+{
+  return FileSystem::basename(m_basedir);
 }
 
 void
@@ -122,7 +130,7 @@ World::save(bool retry)
         {
           std::ostringstream msg;
           msg << "Couldn't create directory for levelset '"
-              << dirname << "': " <<PHYSFS_getLastErrorCode();
+              << dirname << "': " <<PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
           throw std::runtime_error(msg.str());
         }
       }
@@ -141,7 +149,9 @@ World::save(bool retry)
     writer.write("title", m_title, true);
     writer.write("description", m_description, true);
     writer.write("levelset", m_is_levelset);
+    writer.write("contrib-type", "user");
     writer.write("hide-from-contribs", m_hide_from_contribs);
+    writer.write("title-level", m_title_level);
 
     writer.end_list("supertux-level-subset");
     log_warning << "Levelset info saved as " << filepath << "." << std::endl;
@@ -160,7 +170,7 @@ World::save(bool retry)
         {
           std::ostringstream msg;
           msg << "Couldn't create directory for levelset '"
-              << dirname << "': " <<PHYSFS_getLastErrorCode();
+              << dirname << "': " <<PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
           throw std::runtime_error(msg.str());
         }
       }
@@ -173,15 +183,6 @@ std::string
 World::get_worldmap_filename() const
 {
   return FileSystem::join(m_basedir, "worldmap.stwm");
-}
-
-std::string
-World::get_savegame_filename() const
-{
-  const std::string worlddirname = FileSystem::basename(m_basedir);
-  std::ostringstream stream;
-  stream << "profile" << g_config->profile << "/" << worlddirname << ".stsg";
-  return stream.str();
 }
 
 /* EOF */

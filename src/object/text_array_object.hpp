@@ -20,11 +20,10 @@
 #include <memory>
 
 #include "squirrel/exposed_object.hpp"
-#include "scripting/text_array.hpp"
-
 #include "supertux/game_object.hpp"
-#include "supertux/timer.hpp"
 
+#include "scripting/text_array_object.hpp"
+#include "supertux/timer.hpp"
 #include "object/text_object.hpp"
 #include "object/text_array_item.hpp"
 
@@ -32,22 +31,21 @@ typedef size_t ta_index;
 
 /** A text array object intended for narration */
 class TextArrayObject final : public GameObject,
-                              public ExposedObject<TextArrayObject, scripting::TextArray>
+                              public ExposedObject<TextArrayObject, scripting::TextArrayObject>
 {
 public:
-  TextArrayObject(const std::string& name = std::string());
-  TextArrayObject(const ReaderMapping& reader);
-
+  TextArrayObject(const std::string& name = "");
   ~TextArrayObject() override = default;
 
   virtual void draw(DrawingContext& context) override;
   virtual void update(float dt_sec) override;
 
-  virtual bool is_singleton() const override { return true; }
   virtual bool is_saveable() const override { return false; }
 
-  virtual std::string get_class() const override { return "text-array"; }
-  virtual std::string get_display_name() const override { return _("Text array"); }
+  static std::string class_name() { return "text-array"; }
+  virtual std::string get_class_name() const override { return class_name(); }
+  static std::string display_name() { return _("Text array"); }
+  virtual std::string get_display_name() const override { return display_name(); }
 
   virtual const std::string get_icon_path() const override {
     return "images/engine/editor/textarray.png";
@@ -108,15 +106,15 @@ public:
   /** Gets the text item at a certain index.
       @param: index  the index of the text item to get.
       @return: pointer to the text array item; or nullptr if fails. */
-  TextArrayItem* get_text_item(ta_index index);
+  TextArrayItem* get_text_item(ta_index index) const;
 
   /** Gets the current text item.
       @return: pointer the current text array item; or nullptr if fails. */
-  TextArrayItem* get_current_text_item();
+  TextArrayItem* get_current_text_item() const;
 
   /** Gets the last text item.
       @return: pointer to the last text item; or nullptr if fails. */
-  TextArrayItem* get_last_text_item();
+  TextArrayItem* get_last_text_item() const;
 
 private:
   /** Overrides the properties of the text objects, according to the flags. */
@@ -132,7 +130,7 @@ private:
   /** Should fade transition logic apply
       @return: true if fadeTransition flag is on & the transition is valid;
       false otherwise. */
-  bool should_fade();
+  bool should_fade() const;
 
 private:
   bool m_isDone;

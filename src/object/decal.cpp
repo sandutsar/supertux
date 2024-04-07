@@ -16,7 +16,7 @@
 
 #include "object/decal.hpp"
 #include "scripting/decal.hpp"
-
+#include "supertux/flip_level_transformer.hpp"
 #include "sprite/sprite_manager.hpp"
 #include "util/reader.hpp"
 #include "util/reader_mapping.hpp"
@@ -26,7 +26,6 @@ Decal::Decal(const ReaderMapping& reader) :
   ExposedObject<Decal, scripting::Decal>(this),
   m_default_action("default"),
   m_solid(),
-  m_flip(NO_FLIP),
   m_fade_sprite(m_sprite.get()->clone()),
   m_fade_timer(),
   m_sprite_timer(),
@@ -46,20 +45,12 @@ Decal::get_settings()
 {
   ObjectSettings result = MovingSprite::get_settings();
 
-  result.add_int(_("Z-pos"), &m_layer, "z-pos", LAYER_OBJECTS);
   result.add_bool(_("Solid"), &m_solid, "solid", false);
-  result.add_text(_("Action"), &m_default_action, "action", std::string("default"));
+  result.add_text(_("Action"), &m_default_action, "action", "default");
 
   result.reorder({"z-pos", "sprite", "x", "y"});
 
   return result;
-}
-
-void
-Decal::after_editor_set()
-{
-  m_sprite = SpriteManager::current()->create(m_sprite_name);
-  m_sprite->set_action(m_default_action);
 }
 
 Decal::~Decal()
@@ -104,6 +95,13 @@ Decal::fade_sprite(const std::string& new_sprite, float fade_time)
 }
 
 void
+Decal::on_flip(float height)
+{
+  MovingObject::on_flip(height);
+  FlipLevelTransformer::transform_flip(m_flip);
+}
+
+void
 Decal::update(float)
 {
   if (m_sprite_timer.started())
@@ -117,7 +115,7 @@ Decal::update(float)
     else
     {
       // Square root makes the background stay at fairly constant color/transparency
-      float new_alpha = sqrtf(m_sprite_timer.get_timegone() / m_sprite_timer.get_period());
+      float new_alpha = sqrtf(m_sprite_timer.get_progress());
       float old_alpha = sqrtf(m_sprite_timer.get_timeleft() / m_sprite_timer.get_period());
       m_sprite.get()->set_alpha(new_alpha);
       m_fade_sprite.get()->set_alpha(old_alpha);
@@ -137,7 +135,7 @@ Decal::update(float)
     else
     {
       float alpha;
-      if (m_visible) alpha = m_fade_timer.get_timegone() / m_fade_timer.get_period();
+      if (m_visible) alpha = m_fade_timer.get_progress();
       else alpha = m_fade_timer.get_timeleft() / m_fade_timer.get_period();
       m_sprite.get()->set_alpha(alpha);
     }

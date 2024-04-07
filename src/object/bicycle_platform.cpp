@@ -23,6 +23,7 @@
 #include "object/player.hpp"
 #include "object/portable.hpp"
 #include "supertux/debug.hpp"
+#include "supertux/flip_level_transformer.hpp"
 #include "supertux/sector.hpp"
 #include "util/log.hpp"
 #include "util/reader_mapping.hpp"
@@ -53,7 +54,7 @@ BicyclePlatformChild::collision(GameObject& other, const CollisionHit& )
 {
   const float gravity = Sector::get().get_gravity();
 
-  // somehow the hit parameter does not get filled in, so to determine (hit.top == true) we do this:
+  // Somehow the hit parameter does not get filled in, so to determine (hit.top == true) we do this:
   auto mo = dynamic_cast<MovingObject*>(&other);
   if (!mo) return FORCE_MOVE;
   if ((mo->get_bbox().get_bottom()) > (m_col.m_bbox.get_top() + 2)) return FORCE_MOVE;
@@ -77,8 +78,15 @@ BicyclePlatformChild::collision(GameObject& other, const CollisionHit& )
 
 void BicyclePlatformChild::editor_delete()
 {
-  // removing a child removes the whole platform
+  // Removing a child removes the whole platform.
   m_parent.editor_delete();
+}
+
+void
+BicyclePlatformChild::on_flip(float height)
+{
+  MovingSprite::on_flip(height);
+  FlipLevelTransformer::transform_flip(m_flip);
 }
 
 BicyclePlatform::BicyclePlatform(const ReaderMapping& reader) :
@@ -134,7 +142,7 @@ void
 BicyclePlatform::update(float dt_sec)
 {
   float total_angular_momentum = 0.0f;
-  for (auto& child : m_children)
+  for (const auto& child : m_children)
   {
     const float child_angle = m_angle + child->m_angle_offset;
     const float angular_momentum = cosf(child_angle) * child->m_momentum;
@@ -154,7 +162,7 @@ BicyclePlatform::update(float dt_sec)
   if (m_walker)
   {
     m_walker->update(std::max(0.0f, dt_sec * m_angular_speed * 0.1f));
-    m_center = m_walker->get_pos();
+    m_center = m_walker->get_pos(Sizef(), {});
   }
   else
   {
@@ -163,15 +171,21 @@ BicyclePlatform::update(float dt_sec)
 }
 
 void
+BicyclePlatform::on_flip(float height)
+{
+  m_center.y = height - m_center.y;
+}
+
+void
 BicyclePlatform::editor_delete()
 {
-  // remove children
+  // Remove children.
   for (auto& child : m_children)
   {
     child->remove_me();
   }
 
-  // remove self
+  // Remove self.
   remove_me();
 }
 

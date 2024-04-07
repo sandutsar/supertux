@@ -19,6 +19,8 @@
 
 #include "supertux/moving_object.hpp"
 
+#include "video/layer.hpp"
+
 class DrawingContext;
 
 class MarkerObject : public MovingObject
@@ -37,6 +39,12 @@ public:
   virtual bool hide_if_no_offset() const { return false; }
 
   virtual bool is_saveable() const override { return false; }
+  bool track_state() const override { return false; }
+
+  virtual int get_layer() const override { return LAYER_GUI - 20; }
+
+  virtual void save_state() override = 0;
+  virtual void check_state() override = 0;
 
 private:
   MarkerObject(const MarkerObject&) = delete;

@@ -29,6 +29,12 @@
 #include "util/gettext.hpp"
 #include "math/easing.hpp"
 
+Vector
+PathWalker::Handle::get_pos(const Sizef& size, const Vector& pos) const
+{
+  return pos - Vector(size.width * m_scalar_pos.x, size.height * m_scalar_pos.y) - m_pixel_offset;
+}
+
 PathWalker::PathWalker(UID path_uid, bool running_) :
   m_path_uid(path_uid),
   m_running(running_),
@@ -100,20 +106,21 @@ PathWalker::update(float dt_sec)
 }
 
 Vector
-PathWalker::get_pos() const
+PathWalker::get_pos(const Sizef& object_size, const Handle& handle) const
 {
   Path* path = get_path();
   if (!path) return Vector(0, 0);
   if (!path->is_valid()) return Vector(0, 0);
   if (Editor::is_active()) return path->m_nodes.begin()->position;
+  if (!m_running) return path->m_nodes[m_current_node_nr].position;
 
   const Path::Node* current_node = &(path->m_nodes[m_current_node_nr]);
   const Path::Node* next_node = & (path->m_nodes[m_next_node_nr]);
-  
+
   easing easeFunc = m_walking_speed > 0 ?
                           getEasingByName(current_node->easing) :
                           getEasingByName(get_reverse_easing(next_node->easing));
-  
+
   float progress = static_cast<float>(easeFunc(static_cast<double>(m_node_time)));
 
   Vector p1 = current_node->position,
@@ -121,15 +128,17 @@ PathWalker::get_pos() const
          p3 = m_walking_speed > 0 ? next_node->bezier_before : next_node->bezier_after,
          p4 = next_node->position;
 
-  return path->m_adapt_speed ?
+  Vector position = path->m_adapt_speed ?
                           Bezier::get_point(p1, p2, p3, p4, progress) :
                           Bezier::get_point_by_length(p1, p2, p3, p4, progress);
+
+  return handle.get_pos(object_size, position);
 }
 
 void
 PathWalker::goto_node(int node_no)
 {
-  Path* path = get_path();
+  const Path* path = get_path();
   if (!path) return;
 
   if (node_no == m_stop_at_node_nr) return;

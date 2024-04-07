@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the SuperTux package.
 # 
 # Translators:
+# Semphris <semphris@protonmail.com>, 2021
 # Antoine <men.pub69@gmx.com>, 2020
 # Benjamin Leduc <giby_the_kid@yahoo.fr>, 2013-2016
 # Céline Marmin, 2016
@@ -14,25 +15,25 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SuperTux\n"
 "Report-Msgid-Bugs-To: https://github.com/SuperTux/supertux/issues\n"
-"POT-Creation-Date: 2019-11-24 01:44+0100\n"
-"PO-Revision-Date: 2020-11-05 20:53+0000\n"
-"Last-Translator: Antoine <men.pub69@gmx.com>\n"
-"Language-Team: French (http://www.transifex.com/arctic-games/supertux/language/fr/)\n"
+"POT-Creation-Date: 2024-03-03 03:26+0100\n"
+"PO-Revision-Date: 2013-08-10 23:08+0000\n"
+"Last-Translator: Semphris <semphris@protonmail.com>, 2021\n"
+"Language-Team: French (http://app.transifex.com/arctic-games/supertux/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: data/levels/bonus3/-89-2_degrees.stl:3
-msgid "-89.2 degrees"
-msgstr "-89.2 degrés"
+msgid "The Level Formely Known As \"-89,2 Degrees\""
+msgstr "Le niveau connu précédemment en tant que \"-89,2 degrés\""
 
 #: data/levels/bonus3/Global_Warming.stl:3
 msgid "Global Warming"
 msgstr "Réchauffement climatique "
 
-#: data/levels/bonus3/One Night in the Sky.stl:3
+#: ⁨data/levels/bonus3/One Night in the Sky.stl⁩:3
 msgid "One Night in the Sky"
 msgstr "Une nuit dans le ciel"
 
@@ -45,14 +46,14 @@ msgid "Another cold day"
 msgstr "Un autre jour de froid"
 
 #: data/levels/bonus3/antarctic_rain.stl:3
-msgid "Antarctic rain"
-msgstr "Pluie d'Antarctique"
+msgid "Forest Rain (aka \"Antarctic Rain\")"
+msgstr "Pluie de forêt (aussi \"Pluie en Antarctique\")"
 
 #: data/levels/bonus3/but_no_one_can_stop_it.stl:3
 msgid "...but no one can stop it..."
 msgstr "… mais personne ne peut l'arrêter…"
 
-#: data/levels/bonus3/but_no_one_can_stop_it.stl:392
+#: data/levels/bonus3/but_no_one_can_stop_it.stl:428
 msgid ""
 "-Sorry, this flying platform is lazy.\n"
 "-Come back another time."
@@ -84,7 +85,7 @@ msgstr "#Bon Travail ! Tu as gardé la lanterne rouge ! Tu n'en avais pas beso
 msgid "Coconut Fortress"
 msgstr "La Forteresse des noix de coco"
 
-#: data/levels/bonus3/crystal sunset.stl:3
+#: ⁨data/levels/bonus3/crystal sunset.stl⁩:3
 msgid "Crystal Sunset"
 msgstr "Coucher de soleil cristallin"
 
@@ -133,6 +134,10 @@ msgstr "La descente"
 msgid "Entering the castle"
 msgstr "L'entrée du château"
 
+#: data/levels/bonus3/entering_castle.stl:60
+msgid "#Sorry, nothing to see here! Use the rope to get out!"
+msgstr "#Désolé, rien à voir ici! Utilisez la corde pour sortir!"
+
 #: data/levels/bonus3/flowers.stl:3
 msgid "Flower Bonus"
 msgstr "Bonus fleuri"
@@ -141,7 +146,7 @@ msgstr "Bonus fleuri"
 msgid "After the Glaciers"
 msgstr "Après les glaciers"
 
-#: data/levels/bonus3/hanging roof.stl:3
+#: ⁨data/levels/bonus3/hanging roof.stl⁩:3
 msgid "Hanging From the Roof"
 msgstr "Accroché au plafond"
 
@@ -173,13 +178,13 @@ msgstr "Oh l'idée… Oh Nice…"
 msgid "The Toilette zone"
 msgstr "La 4½ ème dimension"
 
-#: data/levels/bonus3/niv-3.stl:29
+#: data/levels/bonus3/niv-3.stl:58
 msgid ""
 "- Flush: \n"
 "#Press the up key to flush! "
 msgstr "- Tirer la chasse : \n#Appuyez sur la touche « Haut » pour tirer la chasse !"
 
-#: data/levels/bonus3/niv-3.stl:219
+#: data/levels/bonus3/niv-3.stl:380
 msgid ""
 "- A Way out?\n"
 "#Let's Jump! "
@@ -217,7 +222,7 @@ msgstr "Une colline enneigée"
 msgid "Three Frosty Icebergs"
 msgstr "Trois icebergs givrés"
 
-#: data/levels/bonus3/under ice.stl:3
+#: ⁨data/levels/bonus3/under ice.stl⁩:3
 msgid "Under the Ice"
 msgstr "Sous la glace"
 
@@ -225,15 +230,6 @@ msgstr "Sous la glace"
 msgid "Bonus Island III"
 msgstr "Île Bonus 3"
 
-#: data/levels/bonus3/worldmap.stwm:238
-msgid "You found a secret place!"
-msgstr "Vous avez trouvé un niveau caché !"
-
-#: data/levels/bonus3/worldmap.stwm:282 data/levels/bonus3/worldmap.stwm:297
-#: data/levels/bonus3/worldmap.stwm:304
+#: data/levels/bonus3/worldmap.stwm:273
 msgid "Go Home"
 msgstr "Retourner au point de départ"
-
-#: data/levels/bonus3/worldmap.stwm:290
-msgid "Enter Forest Section"
-msgstr "Entrer dans la Zone Forestière"
